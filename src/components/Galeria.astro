@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import p1 from '../assets/images/fotos fotograf delta/_DSC5247.jpg';
+import p2 from '../assets/images/fotos fotograf delta/_DSC5489.jpg';
+import p3 from '../assets/images/fotos fotograf delta/_DSC5288.jpg';
+import p4 from '../assets/images/fotos fotograf delta/_DSC5453.jpg';
+import p5 from '../assets/images/fotos fotograf delta/_DSC5372.jpg';
+import p6 from '../assets/images/fotos fotograf delta/_DSC5262.jpg';
+
+const photos = [
+  { src: p1 },
+  { src: p3 },
+  { src: p2 },
+  { src: p5, focus: 'center 30%' },
+  { src: p4 },
+  { src: p6 },
+];
+---
+
+<section class="gallery">
+  <div class="gallery-strip">
+    {
+      photos.map((photo, i) => (
+        <a href={`#foto-${i}`} class="gallery-thumb">
+          <Image
+            src={photo.src}
+            alt={`Foto ${i + 1} de la cursa`}
+            width={500}
+            class="gallery-thumb-img"
+            style={`object-position: ${photo.focus ?? 'center'};`}
+          />
+        </a>
+      ))
+    }
+  </div>
+
+  {
+    photos.map((photo, i) => (
+      <div class="lightbox" id={`foto-${i}`}>
+        <a href="#" class="lightbox-backdrop" aria-label="Tanca la imatge" />
+        <div class="lightbox-inner">
+          <Image src={photo.src} alt={`Foto ${i + 1} de la cursa`} width={1400} class="lightbox-img" />
+          <a href="#" class="lightbox-close" aria-label="Tanca">
+            &times;
+          </a>
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .gallery {
+    background-color: #fff;
+    padding: 0;
+  }
+
+  .gallery-strip {
+    display: flex;
+    width: 100%;
+    height: 180px;
+    gap: 0;
+  }
+
+  .gallery-thumb {
+    flex: 1;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .gallery-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-thumb:hover .gallery-thumb-img {
+    transform: scale(1.06);
+  }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox:target {
+    display: flex;
+  }
+
+  .lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(3, 36, 68, 0.92);
+  }
+
+  .lightbox-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 92vw;
+    max-height: 88vh;
+  }
+
+  .lightbox-img {
+    display: block;
+    max-width: 92vw;
+    max-height: 88vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  @media (max-width: 720px) {
+    .gallery-strip {
+      height: 110px;
+    }
+  }
+</style>

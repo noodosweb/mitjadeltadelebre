@@ -1,0 +1,220 @@
+---
+import { Image } from 'astro:assets';
+import preuImage from '../assets/images/fotos fotograf delta/_DSC5218.jpg';
+
+const trams = [
+  { tram: 'Tram 1', range: "8 d'agost - 31 d'octubre 2026", price: 28, highlight: true },
+  { tram: 'Tram 2', range: '1 de novembre - 31 de desembre 2026', price: 30 },
+  { tram: 'Tram 3', range: '1 de gener - 28 de febrer 2027', price: 33 },
+  { tram: 'Tram 4', range: "1 de març - 4 d'abril 2027", price: 35 },
+];
+
+const supplements = [
+  { label: 'No federats', price: '+2€' },
+  { label: 'Recollida de dorsals exprés (dia de la cursa)', price: '+1€' },
+];
+---
+
+<section class="preu" id="preu">
+  <div class="preu-layout">
+    <div class="preu-text">
+      <span class="preu-eyebrow">Inscripcions</span>
+      <h2>Preu</h2>
+      <p class="preu-lead">El preu de la inscripció varia segons la data en què t'inscriguis.</p>
+
+      <div class="preu-grid">
+        {
+          trams.map((tram) => (
+            <div class:list={['tram-card', { 'tram-card--highlight': tram.highlight }]}>
+              {tram.highlight && <span class="tram-badge">Preu inicial</span>}
+              <span class="tram-name">{tram.tram}</span>
+              <span class="tram-price">{tram.price}€</span>
+              <span class="tram-range">{tram.range}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="preu-supplements">
+        {
+          supplements.map((s) => (
+            <div class="supplement">
+              <span class="supplement-label">{s.label}</span>
+              <span class="supplement-price">{s.price}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="preu-photo-wrap">
+      <Image src={preuImage} alt="Corredors de la Mitja Marató Delta de l'Ebre" class="preu-photo" width={900} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .preu {
+    background-color: var(--color-navy);
+    color: #fff;
+    padding: 3rem 1.5rem;
+  }
+
+  .preu-layout {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 2.5rem;
+    align-items: stretch;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .preu-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .preu-eyebrow {
+    display: block;
+    color: var(--color-delta-green-light);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.4rem;
+  }
+
+  .preu h2 {
+    font-size: 2.2rem;
+    margin: 0;
+  }
+
+  .preu-lead {
+    opacity: 0.85;
+    margin: 0.75rem 0 0;
+  }
+
+  .preu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .tram-card {
+    position: relative;
+    background-color: var(--color-gray-light);
+    color: var(--color-navy);
+    border-radius: 8px;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.3rem;
+    border: 2px solid transparent;
+  }
+
+  .tram-card--highlight {
+    border-color: var(--color-delta-green);
+    background-color: #fff;
+  }
+
+  .tram-badge {
+    position: absolute;
+    top: -13px;
+    background-color: var(--color-delta-green);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .tram-name {
+    color: var(--color-gray-mid);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+  }
+
+  .tram-price {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .tram-range {
+    font-size: 0.72rem;
+    color: var(--color-gray-mid);
+  }
+
+  .preu-supplements {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .supplement {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+
+  .supplement-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .supplement-price {
+    font-weight: 700;
+    color: var(--color-delta-green-light);
+    white-space: nowrap;
+  }
+
+  .preu-photo-wrap {
+    position: relative;
+  }
+
+  .preu-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .preu-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .preu-photo-wrap {
+      min-height: 320px;
+      order: -1;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .preu-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .supplement {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+</style>

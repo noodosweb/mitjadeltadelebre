@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import avituallamentIcon from '../assets/iconos/avituallament.png';
+import fotoIcon from '../assets/iconos/foto.png';
+import cronoIcon from '../assets/iconos/crono.png';
+import dutxaIcon from '../assets/iconos/dutxa.png';
+import ambulanciaIcon from '../assets/iconos/ambulancia.png';
+import animacioIcon from '../assets/iconos/animacio.png';
+import bossaIcon from '../assets/iconos/bossa.png';
+import premisIcon from '../assets/iconos/premis.png';
+import robaIcon from '../assets/iconos/roba.png';
+import postCursaIcon from '../assets/iconos/post-cursa.png';
+
+const services = [
+  {
+    title: 'Avituallaments',
+    description: "Punts d'avituallament distribuïts al llarg del recorregut per hidratar-te durant la cursa.",
+    image: avituallamentIcon,
+  },
+  {
+    title: 'Foto meta gratuïta',
+    description: "Descarrega't gratuïtament la teva foto oficial en creuar la línia de meta.",
+    image: fotoIcon,
+  },
+  {
+    title: 'Cronometratge',
+    description: 'Cronometratge oficial per xip amb el teu temps de cursa disponible a l’instant.',
+    image: cronoIcon,
+  },
+  {
+    title: 'Animació',
+    description: 'Música i animació al llarg del recorregut i a la zona de sortida i arribada.',
+    image: animacioIcon,
+  },
+  {
+    title: 'Dutxes',
+    description: 'Servei de dutxes disponible per als participants un cop finalitzada la cursa.',
+    image: dutxaIcon,
+  },
+  {
+    title: 'Servei mèdic',
+    description: 'Equip mèdic i d’assistència sanitària present durant tota la prova.',
+    image: ambulanciaIcon,
+  },
+  {
+    title: 'Bossa del corredor',
+    description: 'Bossa del corredor amb obsequis i tota la informació de la cursa.',
+    image: bossaIcon,
+  },
+  {
+    title: 'Servei guarda-roba',
+    description: 'Deixa les teves pertinences en un lloc segur mentre corres.',
+    image: robaIcon,
+  },
+  {
+    title: 'Premis',
+    description: 'Trofeus i premis per als primers classificats de cada categoria.',
+    image: premisIcon,
+  },
+  {
+    title: 'Servei post cursa',
+    description: 'Zona d’avituallament post cursa perquè recuperis forces després de l’esforç.',
+    image: postCursaIcon,
+  },
+].map((service, index) => ({ ...service, number: String(index + 1).padStart(2, '0') }));
+---
+
+<section class="services" id="serveis">
+  <div class="services-inner">
+    <span class="services-eyebrow">Inscripció</span>
+    <h2>Serveis</h2>
+    <p class="services-lead">Què inclou la teva inscripció?</p>
+
+    <div class="services-grid">
+      {
+        services.map((service) => (
+          <div class="service-card">
+            <span class="service-number">{service.number}</span>
+            {service.image ? (
+              <Image src={service.image} alt="" class="service-icon-bare" width={220} />
+            ) : (
+              <div class="service-badge">
+                <svg viewBox={service.viewBox} fill="currentColor">
+                  <path d={service.path}></path>
+                </svg>
+              </div>
+            )}
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background-color: #fff;
+    color: var(--color-navy);
+    padding: 3rem 1.5rem;
+  }
+
+  .services-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .services-eyebrow {
+    display: block;
+    color: var(--color-olive);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.4rem;
+  }
+
+  .services h2 {
+    font-size: 2.2rem;
+    margin: 0;
+  }
+
+  .services-lead {
+    color: var(--color-gray-mid);
+    margin: 0.75rem 0 0;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--color-gray-light);
+    border-left: 1px solid var(--color-gray-light);
+  }
+
+  .service-card {
+    position: relative;
+    padding: 1.75rem 1.25rem;
+    border-right: 1px solid var(--color-gray-light);
+    border-bottom: 1px solid var(--color-gray-light);
+  }
+
+  .service-number {
+    display: block;
+    color: var(--color-olive);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .service-badge {
+    width: 64px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 18%, 100% 62%, 50% 100%, 0% 62%, 0% 18%);
+    background-color: var(--color-gray-light);
+    border: 2px solid var(--color-navy);
+    margin-bottom: 1.1rem;
+  }
+
+  .service-badge svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-navy);
+  }
+
+  .service-icon-bare {
+    width: 110px;
+    height: 92px;
+    object-fit: contain;
+    margin: -0.75rem 0 0.5rem -0.85rem;
+  }
+
+  .service-card h3 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .service-card p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-gray-mid);
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

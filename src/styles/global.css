@@ -1,0 +1,71 @@
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/500.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/montserrat/800.css';
+
+:root {
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+
+  --color-navy: #032444;
+  --color-navy-dark: #071b32;
+  --color-olive: #4a5925;
+  --color-gray-light: #e6e8ea;
+  --color-gray-mid: #9aa3a8;
+
+  /* Accent puntual (només microinteraccions, no forma part de la marca) */
+  --color-delta-green: #2f7a4d;
+  --color-delta-green-light: #8fcda6;
+  --color-accent-gold: #e8b84b;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-navy);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.5rem;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.9rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+p {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+  margin: 0;
+}

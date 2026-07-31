@@ -1,0 +1,211 @@
+---
+import { Image } from 'astro:assets';
+import bgImage from '../assets/images/fotos fotograf delta/_DSC5254.jpg';
+
+const timeline = [
+  { day: 'Dissabte', time: '10 - 20h', text: 'Entrega de dorsals', highlight: true },
+  { day: 'Dissabte', time: '10 - 20h', text: 'Fira del corredor' },
+  {
+    day: 'Diumenge',
+    time: '7 - 8:15h',
+    text: "Recollida exprés de dorsals (només per a qui ha pagat el suplement d'1€ a la inscripció)",
+  },
+  { day: 'Diumenge', time: '9h', text: 'Sortida Mitja Marató', highlight: true },
+  { day: 'Diumenge', time: '12h', text: 'Entrega de trofeus' },
+].map((item, index, arr) => ({ ...item, isNewDay: index === 0 || arr[index - 1].day !== item.day }));
+---
+
+<section class="horaris" id="horaris">
+  <Image src={bgImage} alt="Corredors a la Mitja Marató Delta de l'Ebre" class="horaris-bg" loading="lazy" width={1920} />
+  <div class="horaris-overlay"></div>
+
+  <div class="horaris-content">
+    <span class="horaris-eyebrow">Entrega de dorsals</span>
+    <h2>Horaris</h2>
+
+    <div class="steps">
+      {
+        timeline.map((item, i) => (
+          <div class="step">
+            <div class="step-day-row">
+              {item.isNewDay && <span class="step-day">{item.day}</span>}
+            </div>
+            <div class="step-marker">
+              <span class="step-dot" />
+              {i < timeline.length - 1 && <span class="step-line" />}
+            </div>
+            <div class="step-content">
+              <span class="step-time">{item.time}</span>
+              <span class:list={['step-text', { 'step-text--highlight': item.highlight }]}>{item.text}</span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .horaris {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .horaris-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .horaris-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(3, 36, 68, 0.85) 0%, rgba(3, 36, 68, 0.78) 100%);
+    z-index: 1;
+  }
+
+  .horaris-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: calc(2rem + 10px) 1.5rem;
+    width: 100%;
+  }
+
+  .horaris-eyebrow {
+    display: block;
+    color: var(--color-delta-green-light);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.4rem;
+  }
+
+  .horaris h2 {
+    font-size: 2.2rem;
+    margin: 0 0 1.75rem;
+  }
+
+  .steps {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .step:last-child {
+    flex: 0 0 auto;
+  }
+
+  .step-marker {
+    display: flex;
+    align-items: center;
+  }
+
+  .step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-delta-green-light);
+    flex-shrink: 0;
+  }
+
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin-left: 2px;
+  }
+
+  .step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.75rem;
+    padding-right: 1.5rem;
+  }
+
+  .step-day-row {
+    min-height: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-day {
+    color: var(--color-delta-green-light);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+
+  .step-time {
+    font-weight: 700;
+  }
+
+  .step-text {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.4;
+    font-size: 0.9rem;
+  }
+
+  .step-text--highlight {
+    color: var(--color-accent-gold);
+    font-weight: 700;
+  }
+
+  @media (max-width: 720px) {
+    .steps {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .step {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+    }
+
+    .step-day-row {
+      order: -1;
+      width: 100%;
+      min-height: 0;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-day-row:empty {
+      display: none;
+    }
+
+    .step-marker {
+      flex-direction: column;
+      align-items: center;
+      align-self: stretch;
+    }
+
+    .step-line {
+      width: 2px;
+      height: auto;
+      flex: 1;
+      margin-left: 0;
+      margin-top: 2px;
+    }
+
+    .step-content {
+      margin-top: 0;
+      padding-right: 0;
+      padding-bottom: 1.25rem;
+    }
+  }
+</style>

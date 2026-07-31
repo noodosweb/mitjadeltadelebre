@@ -1,0 +1,178 @@
+---
+import { Image } from 'astro:assets';
+
+import logoOlivaMotor from '../assets/images/logos-collaboradors/COL·LABORADOR PRINCIPAL I CLUB/oliva_motor_cropped.png';
+import logoClinicaDental from '../assets/images/logos-collaboradors/COL·LABORADOR PRINCIPAL I CLUB/clinicaDental.jpeg';
+
+import logoFresquet from '../assets/images/logos-collaboradors/EMPRESES/Fresquet.jpg';
+import logoDecohabitat from '../assets/images/logos-collaboradors/EMPRESES/LOGO DECOHABITAT.png';
+import logoRafelPrades from '../assets/images/logos-collaboradors/EMPRESES/LOGO VECTORITZAT RAFEL PRADES_Mesa de trabajo 1.png';
+import logoFlorette from '../assets/images/logos-collaboradors/EMPRESES/Logo Florette.jpg';
+import logoQuironuria from '../assets/images/logos-collaboradors/EMPRESES/Nuria Ph-Quirogel.png';
+import logoHotelTortosa from '../assets/images/logos-collaboradors/EMPRESES/logo_hotel_tortosa.png';
+import logoKronospan from '../assets/images/logos-collaboradors/EMPRESES/logo-kronospan.jpg';
+import logoTosca from '../assets/images/logos-collaboradors/EMPRESES/logo_tosca.png';
+import logoLluis from '../assets/images/logos-collaboradors/EMPRESES/logo_lluis.jpg';
+import logoPerfils from '../assets/images/logos-collaboradors/EMPRESES/logo_perfils.png';
+
+const principals = [
+  { src: logoOlivaMotor, alt: 'Grup Oliva Motor' },
+  { src: logoClinicaDental, alt: 'Clínica Dental Ebreclínic' },
+];
+
+const mesPatrocinadors = [
+  { src: logoFresquet, alt: 'Fresquet' },
+  { src: logoDecohabitat, alt: 'Decohabitat' },
+  { src: logoRafelPrades, alt: 'Rafel Prades' },
+  { src: logoFlorette, alt: 'Florette' },
+  { src: logoQuironuria, alt: 'QuiroNúria PH-Quirogel' },
+  { src: logoHotelTortosa, alt: 'Hotel Tortosa Parc' },
+  { src: logoKronospan, alt: 'Kronospan' },
+  { src: logoTosca, alt: 'Tosca' },
+  { src: logoLluis, alt: 'Lluís' },
+  { src: logoPerfils, alt: 'Perfils Estilistes' },
+];
+---
+
+<section class="collab" id="collaboradors">
+  <div class="collab-inner">
+    <span class="collab-eyebrow">Gràcies pel seu suport</span>
+    <h2>Col·laboradors</h2>
+
+    <div class="collab-tier">
+      <p class="collab-tier-label">Patrocinadors principals</p>
+      <div class="collab-grid collab-grid--principal">
+        {
+          principals.map((logo) => (
+            <div class="collab-logo collab-logo--principal">
+              <Image src={logo.src} alt={logo.alt} width={360} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="collab-tier">
+      <p class="collab-tier-label">Més patrocinadors</p>
+      <div class="collab-grid-6">
+        {
+          mesPatrocinadors.map((logo) => (
+            <div class="collab-logo collab-logo--card">
+              <Image src={logo.src} alt={logo.alt} width={260} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .collab {
+    background-color: #fff;
+    padding: 3rem 1.5rem;
+  }
+
+  .collab-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .collab-eyebrow {
+    display: block;
+    color: var(--color-olive);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.4rem;
+  }
+
+  .collab h2 {
+    color: var(--color-navy);
+    font-size: 2.2rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .collab-tier {
+    margin-bottom: 2.5rem;
+  }
+
+  .collab-tier:last-child {
+    margin-bottom: 0;
+  }
+
+  .collab-tier-label {
+    color: var(--color-gray-mid);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-gray-light);
+  }
+
+  .collab-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .collab-grid--principal {
+    justify-content: flex-start;
+  }
+
+  .collab-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .collab-logo :global(img) {
+    max-height: 60px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .collab-logo--principal :global(img) {
+    max-height: 90px;
+  }
+
+  .collab-grid-6 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.25rem;
+  }
+
+  .collab-logo--card {
+    background-color: var(--color-gray-light);
+    border-radius: 8px;
+    padding: 0.5rem;
+    aspect-ratio: 3 / 2;
+  }
+
+  .collab-logo--card :global(img) {
+    max-height: 80px;
+    max-width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .collab-grid-6 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .collab-grid {
+      gap: 1.75rem;
+    }
+
+    .collab-grid-6 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  }
+</style>
