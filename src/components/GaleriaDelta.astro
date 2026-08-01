@@ -122,7 +122,72 @@ const photos = [{ src: p1 }, { src: p2 }, { src: p3 }, { src: p4 }, { src: p5 },
 
   @media (max-width: 720px) {
     .gallery-strip {
-      height: 110px;
+      height: 125px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+
+    .gallery-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gallery-strip.dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+      user-select: none;
+    }
+
+    .gallery-thumb {
+      flex: 0 0 42%;
+      scroll-snap-align: start;
     }
   }
 </style>
+
+<script>
+  document.querySelectorAll('.gallery-strip').forEach((strip) => {
+    let isDown = false;
+    let moved = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    strip.addEventListener('mousedown', (e) => {
+      isDown = true;
+      moved = false;
+      startX = e.pageX;
+      startScroll = strip.scrollLeft;
+      strip.classList.add('dragging');
+    });
+
+    const stopDrag = () => {
+      isDown = false;
+      strip.classList.remove('dragging');
+    };
+
+    strip.addEventListener('mouseleave', stopDrag);
+    strip.addEventListener('mouseup', stopDrag);
+
+    strip.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      const delta = e.pageX - startX;
+      if (Math.abs(delta) > 5) moved = true;
+      e.preventDefault();
+      strip.scrollLeft = startScroll - delta;
+    });
+
+    strip.addEventListener(
+      'click',
+      (e) => {
+        if (moved) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true
+    );
+  });
+</script>

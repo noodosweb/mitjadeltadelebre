@@ -12,7 +12,11 @@ const timeline = [
   },
   { day: 'Diumenge', time: '9h', text: 'Sortida Mitja Marató', highlight: true },
   { day: 'Diumenge', time: '12h', text: 'Entrega de trofeus' },
-].map((item, index, arr) => ({ ...item, isNewDay: index === 0 || arr[index - 1].day !== item.day }));
+].map((item, index, arr) => ({
+  ...item,
+  isNewDay: index === 0 || arr[index - 1].day !== item.day,
+  isDayEnd: index === arr.length - 1 || arr[index + 1].day !== item.day,
+}));
 ---
 
 <section class="horaris" id="horaris">
@@ -26,7 +30,7 @@ const timeline = [
     <div class="steps">
       {
         timeline.map((item, i) => (
-          <div class="step">
+          <div class:list={['step', { 'step--day-end': item.isDayEnd }]}>
             <div class="step-day-row">
               {item.isNewDay && <span class="step-day">{item.day}</span>}
             </div>
@@ -203,9 +207,19 @@ const timeline = [
     }
 
     .step-content {
+      flex: 1 1 0%;
+      min-width: 0;
       margin-top: 0;
       padding-right: 0;
       padding-bottom: 1.25rem;
+    }
+
+    .step--day-end .step-line {
+      visibility: hidden;
+    }
+
+    .step--day-end .step-content {
+      padding-bottom: 1.75rem;
     }
   }
 </style>

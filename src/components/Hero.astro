@@ -91,4 +91,54 @@ import logo from '../assets/images/logo_blanc.png';
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   }
+
+  @media (max-width: 720px) {
+    .hero {
+      min-height: 520px;
+    }
+
+    .hero-content {
+      padding: 2.5rem 1.25rem 3.5rem;
+    }
+
+    .hero-logo {
+      width: 260px;
+    }
+
+    .hero-date {
+      font-size: 2.5rem;
+    }
+
+    .hero-title {
+      font-size: 1.15rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      min-height: 460px;
+    }
+
+    .hero-logo {
+      width: 200px;
+      margin-bottom: 1rem;
+    }
+
+    .hero-date {
+      font-size: 2rem;
+    }
+
+    .hero-title {
+      font-size: 1rem;
+    }
+
+    .hero-info {
+      font-size: 0.9rem;
+    }
+
+    .hero-cta {
+      padding: 0.8rem 1.6rem;
+      font-size: 0.95rem;
+    }
+  }
 </style>
