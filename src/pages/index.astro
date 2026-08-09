@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
@@ -11,13 +12,61 @@ import Preu from '../components/Preu.astro';
 import GaleriaDelta from '../components/GaleriaDelta.astro';
 import Collaboradors from '../components/Collaboradors.astro';
 import Footer from '../components/Footer.astro';
+import heroImage from '../assets/images/portada.jpg';
+
+const siteUrl = 'https://mitjadeltadelebre.com';
+const canonicalUrl = `${siteUrl}/`;
+const title = "Mitja Marató Delta de l'Ebre — 1a edició, 18 abril 2027";
+const description =
+	"La 1a Mitja Marató Delta de l'Ebre: 21,097 km pel Parc Natural, la primera mitja marató d'asfalt de Catalunya en un espai natural protegit. 18 d'abril de 2027.";
+const ogImage = await getImage({ src: heroImage, width: 1200, height: 630 });
+const ogImageUrl = `${siteUrl}${ogImage.src}`;
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'SportsEvent',
+	name: "Mitja Marató Delta de l'Ebre",
+	description,
+	startDate: '2027-04-18',
+	url: canonicalUrl,
+	image: ogImageUrl,
+	location: {
+		'@type': 'Place',
+		name: "Parc Natural del Delta de l'Ebre",
+		address: {
+			'@type': 'PostalAddress',
+			addressRegion: 'Catalunya',
+			addressCountry: 'ES',
+		},
+	},
+	organizer: {
+		'@type': 'Organization',
+		name: 'Grup Oliva Motor',
+	},
+};
 ---
 
 <html lang="ca">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Mitja Marató Delta de l'Ebre</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Mitja Marató Delta de l'Ebre" />
+		<meta property="og:image" content={ogImageUrl} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
 		<Nav />

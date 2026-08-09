@@ -1,3 +1,12 @@
+<!-- revisor-web:metadatos -->
+## Metadatos SEO
+La pàgina `/` (única ruta) porta `title`, `description` i `jsonLd` propis al
+`<head>` de `index.astro`, basats en el seu contingut real. Títol home: `Marca
+— Títol`. Si s'afegeixen noves pàgines, seguir el mateix patró (interiors:
+`Títol — Marca`) i mantenir title/description únics entre pàgines. Per al
+tractament complet: `/revisor-web:revisar metadatos`.
+<!-- /revisor-web:metadatos -->
+
 ## Development
 
 When starting the dev server, use background mode:
