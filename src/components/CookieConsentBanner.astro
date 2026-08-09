@@ -1,4 +1,12 @@
-<div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="true" aria-label="Gestionar consentiment" hidden>
+<div
+	id="cookie-banner"
+	class="cookie-banner"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Gestionar consentiment"
+	hidden
+	style="--cookie-font: var(--font-sans, system-ui, sans-serif); --cookie-surface: var(--color-navy-dark, #1a1a1a); --cookie-text: #fff; --cookie-accent: var(--color-accent-gold, #e8b84b); --cookie-accent-text: var(--color-navy-dark, #1a1a1a); --cookie-radius: 0.5rem; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; padding: 1rem; max-height: 100vh; overflow-y: auto; font-family: var(--cookie-font);"
+>
 	<div class="cookie-banner__inner">
 		<p class="cookie-banner__text">
 			Utilitzem cookies pròpies per al funcionament del lloc web i, si ho consentiu, per
@@ -114,29 +122,17 @@
 </script>
 
 <style>
-	/* Tokens de tema: único punto de personalización por proyecto. Redefine estos custom
-	   properties (o los --color-*/--font-sans equivalentes del proyecto) para adaptar colores y
-	   tipografía sin tocar el resto del componente ni su estructura/IDs. */
-	.cookie-banner {
-		--cookie-font: var(--font-sans, system-ui, sans-serif);
-		--cookie-surface: var(--color-navy-dark, #1a1a1a);
-		--cookie-text: #fff;
-		--cookie-accent: var(--color-accent-gold, #e8b84b);
-		--cookie-accent-text: var(--color-navy-dark, #1a1a1a);
-		--cookie-radius: 0.5rem;
-	}
+	/* Tokens de tema y posicionamiento crítico del banner: viven en el atributo `style` inline
+	   del elemento raíz (arriba), no aquí. Astro/Vite tiene un bug de compilación no determinista
+	   que puede eliminar del CSS compilado la regla `.cookie-banner { ... }` que apunta al
+	   elemento raíz del componente cuando coexiste con otras reglas en el mismo bloque `<style>`
+	   (reproducido de forma aislada, sin causa raíz identificada con certeza — parece relacionado
+	   con el chunking/minificado de CSS entre páginas). El resto de reglas (descendientes, nunca
+	   la regla del elemento raíz) no se ha visto afectado en las pruebas. No vuelvas a poner aquí
+	   una regla `.cookie-banner { ... }`: usa el atributo `style` del elemento raíz.
 
-	.cookie-banner {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		z-index: 9999;
-		padding: 1rem;
-		max-height: 100vh;
-		overflow-y: auto;
-		font-family: var(--cookie-font);
-	}
+	   Para adaptar colores/tipografía a otro proyecto, redefine los custom properties en ese
+	   mismo atributo `style` (o pásalos como prop del componente si se prefiere). */
 
 	.cookie-banner__inner {
 		max-width: 40rem;
