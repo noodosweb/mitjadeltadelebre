@@ -7,6 +7,19 @@ La pàgina `/` (única ruta) porta `title`, `description` i `jsonLd` propis al
 tractament complet: `/revisor-web:revisar metadatos`.
 <!-- /revisor-web:metadatos -->
 
+<!-- revisor-web:analitica -->
+## Analítica — GA4 i Search Console
+L'ID de mesurament de GA4 viu en una variable d'entorn (`PUBLIC_GA4_MEASUREMENT_ID`), mai
+hardcodejat — es passa com a Build Arg de Docker (veure `Dockerfile`), no com a variable
+d'entorn de runtime: el lloc és estàtic i el `npm run build` es fa dins la imatge, servit
+després per nginx sense llegir cap `env`. El consentiment es gestiona amb
+`updateAnalyticsConsent()` a `src/lib/analytics.ts`, encara sense connectar (no hi ha banner
+de cookies implementat).
+<!-- revisor-web:analitica:gsc-verificado-externo -->
+Search Console verificat per registre TXT al DNS (mètode extern, sense rastre al codi).
+Per al tractament complet: `/revisor-web:revisar analitica`.
+<!-- /revisor-web:analitica -->
+
 ## Development
 
 When starting the dev server, use background mode:
