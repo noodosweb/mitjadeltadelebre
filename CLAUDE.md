@@ -17,6 +17,10 @@ després per nginx sense llegir cap `env`. El consentiment es gestiona amb
 de cookies implementat).
 <!-- revisor-web:analitica:gsc-verificado-externo -->
 Search Console verificat per registre TXT al DNS (mètode extern, sense rastre al codi).
+<!-- revisor-web:analitica:despliegue-dokploy -->
+Desplegat a producció via Dokploy: `PUBLIC_GA4_MEASUREMENT_ID` configurada a la pestanya
+Build-time Arguments del servei (build-time, no runtime). Verificat en producció el
+2026-08-09 (event `page_view` real a GA4 Tiempo real/DebugView).
 Per al tractament complet: `/revisor-web:revisar analitica`.
 <!-- /revisor-web:analitica -->
 
