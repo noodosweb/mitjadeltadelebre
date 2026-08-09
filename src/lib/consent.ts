@@ -59,3 +59,74 @@ export function initConsent(): void {
     marketing: stored.categories.marketing,
   });
 }
+
+// Cablea el banner (`CookieConsentBanner.astro`) contra el DOM ya renderizado por sus IDs
+// fijos. Vive aquí, no en el <script> del componente, para poder testear la interacción real
+// (clicks, checkboxes, reapertura) con jsdom en vez de solo las funciones de persistencia en
+// aislamiento — un bug de wiring (listener no adjuntado, checkbox leído mal) no lo detecta un
+// test que solo llama a saveConsent() directamente.
+export function mountCookieBanner(): void {
+  const banner = document.getElementById("cookie-banner") as HTMLElement | null;
+  const modal = document.getElementById("cookie-modal") as HTMLElement | null;
+  if (!banner || !modal) return;
+
+  // Idempotente: si ya se cableó este banner (p. ej. doble montaje en dev), no dupliques listeners.
+  if (banner.dataset.consentMounted === "true") return;
+  banner.dataset.consentMounted = "true";
+
+  const prefsInput = document.getElementById("cookie-cat-preferencies") as HTMLInputElement;
+  const statsInput = document.getElementById("cookie-cat-estadistiques") as HTMLInputElement;
+  const marketingInput = document.getElementById("cookie-cat-marketing") as HTMLInputElement;
+
+  const hideBanner = () => {
+    banner.hidden = true;
+  };
+  const showBanner = () => {
+    banner.hidden = false;
+  };
+  const openModal = () => {
+    const stored = getStoredConsent();
+    prefsInput.checked = stored?.categories.preferencies ?? false;
+    statsInput.checked = stored?.categories.estadistiques ?? false;
+    marketingInput.checked = stored?.categories.marketing ?? false;
+    modal.hidden = false;
+  };
+  const closeModal = () => {
+    modal.hidden = true;
+  };
+
+  document.getElementById("cookie-accept")?.addEventListener("click", () => {
+    acceptAll();
+    hideBanner();
+  });
+
+  document.getElementById("cookie-reject")?.addEventListener("click", () => {
+    rejectAll();
+    hideBanner();
+  });
+
+  document.getElementById("cookie-customize")?.addEventListener("click", openModal);
+  document.getElementById("cookie-modal-close")?.addEventListener("click", closeModal);
+  document.getElementById("cookie-modal-backdrop")?.addEventListener("click", closeModal);
+
+  document.getElementById("cookie-modal-save")?.addEventListener("click", () => {
+    saveConsent({
+      preferencies: prefsInput.checked,
+      estadistiques: statsInput.checked,
+      marketing: marketingInput.checked,
+    });
+    closeModal();
+    hideBanner();
+  });
+
+  document.getElementById("reopen-cookie-settings")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    openModal();
+  });
+
+  if (getStoredConsent()) {
+    initConsent();
+  } else {
+    showBanner();
+  }
+}

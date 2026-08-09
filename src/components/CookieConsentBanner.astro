@@ -73,79 +73,33 @@
 </div>
 
 <script>
-	import { acceptAll, getStoredConsent, initConsent, rejectAll, saveConsent } from '../lib/consent';
-
-	const banner = document.getElementById('cookie-banner') as HTMLElement;
-	const modal = document.getElementById('cookie-modal') as HTMLElement;
-	const prefsInput = document.getElementById('cookie-cat-preferencies') as HTMLInputElement;
-	const statsInput = document.getElementById('cookie-cat-estadistiques') as HTMLInputElement;
-	const marketingInput = document.getElementById('cookie-cat-marketing') as HTMLInputElement;
-
-	function hideBanner() {
-		banner.hidden = true;
-	}
-
-	function showBanner() {
-		banner.hidden = false;
-	}
-
-	function openModal() {
-		const stored = getStoredConsent();
-		prefsInput.checked = stored?.categories.preferencies ?? false;
-		statsInput.checked = stored?.categories.estadistiques ?? false;
-		marketingInput.checked = stored?.categories.marketing ?? false;
-		modal.hidden = false;
-	}
-
-	function closeModal() {
-		modal.hidden = true;
-	}
-
-	document.getElementById('cookie-accept')?.addEventListener('click', () => {
-		acceptAll();
-		hideBanner();
-	});
-
-	document.getElementById('cookie-reject')?.addEventListener('click', () => {
-		rejectAll();
-		hideBanner();
-	});
-
-	document.getElementById('cookie-customize')?.addEventListener('click', openModal);
-	document.getElementById('cookie-modal-close')?.addEventListener('click', closeModal);
-	document.getElementById('cookie-modal-backdrop')?.addEventListener('click', closeModal);
-
-	document.getElementById('cookie-modal-save')?.addEventListener('click', () => {
-		saveConsent({
-			preferencies: prefsInput.checked,
-			estadistiques: statsInput.checked,
-			marketing: marketingInput.checked,
-		});
-		closeModal();
-		hideBanner();
-	});
-
-	document.getElementById('reopen-cookie-settings')?.addEventListener('click', (event) => {
-		event.preventDefault();
-		openModal();
-	});
-
-	if (getStoredConsent()) {
-		initConsent();
-	} else {
-		showBanner();
-	}
-
+	import { mountCookieBanner } from '../lib/consent';
+	mountCookieBanner();
 </script>
 
 <style>
+	/* Tokens del banner: único punto de personalización por proyecto. Redefine estos 6
+	   custom properties (o los --color-*/--font-sans de los que heredan por defecto) para
+	   adaptar colores y tipografía sin tocar el resto del componente. */
+	.cookie-banner,
+	.cookie-modal {
+		--cookie-font: var(--font-sans, system-ui, sans-serif);
+		--cookie-surface-dark: var(--color-navy-dark, #1a1a1a);
+		--cookie-surface-light: #fff;
+		--cookie-text-on-dark: rgba(255, 255, 255, 0.85);
+		--cookie-accent: var(--color-accent-gold, #e8b84b);
+		--cookie-accent-text: var(--color-navy-dark, #1a1a1a);
+		--cookie-radius: 999px;
+	}
+
 	.cookie-banner {
 		position: fixed;
 		inset: auto 0 0 0;
 		z-index: 1000;
-		background-color: var(--color-navy-dark);
-		color: #fff;
+		background-color: var(--cookie-surface-dark);
+		color: var(--cookie-text-on-dark);
 		box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
+		font-family: var(--cookie-font);
 	}
 
 	.cookie-banner-inner {
@@ -163,11 +117,11 @@
 		margin: 0;
 		font-size: 0.85rem;
 		line-height: 1.5;
-		color: rgba(255, 255, 255, 0.85);
+		color: var(--cookie-text-on-dark);
 	}
 
 	.cookie-banner-text a {
-		color: #fff;
+		color: var(--cookie-surface-light);
 		text-decoration: underline;
 	}
 
@@ -178,10 +132,10 @@
 	}
 
 	.cookie-btn {
-		font-family: var(--font-sans);
+		font-family: var(--cookie-font);
 		font-weight: 700;
 		font-size: 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--cookie-radius);
 		padding: 0.6rem 1.1rem;
 		cursor: pointer;
 		border: 1px solid transparent;
@@ -189,20 +143,20 @@
 	}
 
 	.cookie-btn-primary {
-		background-color: var(--color-accent-gold);
-		color: var(--color-navy-dark);
+		background-color: var(--cookie-accent);
+		color: var(--cookie-accent-text);
 	}
 
 	.cookie-btn-outline {
 		background-color: transparent;
 		border-color: rgba(255, 255, 255, 0.4);
-		color: #fff;
+		color: var(--cookie-surface-light);
 	}
 
 	.cookie-btn-ghost {
 		background-color: transparent;
 		border: none;
-		color: rgba(255, 255, 255, 0.75);
+		color: var(--cookie-text-on-dark);
 		text-decoration: underline;
 	}
 
@@ -213,6 +167,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		font-family: var(--cookie-font);
 	}
 
 	.cookie-modal-backdrop {
@@ -223,8 +178,8 @@
 
 	.cookie-modal-panel {
 		position: relative;
-		background-color: #fff;
-		color: var(--color-navy);
+		background-color: var(--cookie-surface-light);
+		color: var(--color-navy, #1a1a1a);
 		border-radius: 12px;
 		padding: 2rem;
 		max-width: 480px;
@@ -240,11 +195,11 @@
 
 	.cookie-category {
 		padding: 0.9rem 0;
-		border-bottom: 1px solid var(--color-gray-light);
+		border-bottom: 1px solid var(--color-gray-light, #e6e8ea);
 	}
 
 	.cookie-category:first-of-type {
-		border-top: 1px solid var(--color-gray-light);
+		border-top: 1px solid var(--color-gray-light, #e6e8ea);
 	}
 
 	.cookie-category-header {
@@ -257,7 +212,7 @@
 	.cookie-category p {
 		margin: 0.35rem 0 0;
 		font-size: 0.82rem;
-		color: var(--color-gray-mid);
+		color: var(--color-gray-mid, #666);
 	}
 
 	.cookie-modal-actions {
