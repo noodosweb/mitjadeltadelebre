@@ -30,7 +30,7 @@ const contacte = {
 const legalLinks = [
   { label: 'Avís legal', href: '#' },
   { label: 'Política de privacitat', href: '#' },
-  { label: 'Política de cookies', href: '#' },
+  { label: 'Política de cookies', href: '/politica-cookies' },
 ];
 ---
 
@@ -92,6 +92,7 @@ const legalLinks = [
         {legalLinks.map((link) => (
           <li><a href={link.href}>{link.label}</a></li>
         ))}
+        <li><button type="button" id="reopen-cookie-settings" class="footer-legal-button">Configuració de cookies</button></li>
       </ul>
     </div>
   </div>
@@ -256,6 +257,20 @@ const legalLinks = [
   }
 
   .footer-legal a:hover {
+    color: #fff;
+  }
+
+  .footer-legal-button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-sans);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .footer-legal-button:hover {
     color: #fff;
   }
 

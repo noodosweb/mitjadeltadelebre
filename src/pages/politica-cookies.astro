@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsentBanner from '../components/CookieConsentBanner.astro';
+
+const siteUrl = 'https://mitjadeltadelebre.com';
+const canonicalUrl = `${siteUrl}/politica-cookies`;
+const title = "Política de cookies — Mitja Marató Delta de l'Ebre";
+const description =
+	"Quines cookies utilitza mitjadeltadelebre.com, per a què serveixen i com pots gestionar-ne el consentiment per categories.";
+---
+
+<html lang="ca">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+	</head>
+	<body>
+		<script>
+			import { initAnalytics } from '../lib/analytics';
+			initAnalytics();
+		</script>
+		<Nav />
+		<main class="legal-page">
+			<h1>Política de cookies</h1>
+
+			<p>
+				Aquesta pàgina explica quines cookies utilitza <strong>mitjadeltadelebre.com</strong> i
+				per a què serveix cadascuna. Pots canviar la teva elecció en qualsevol moment des del
+				botó <strong>«Configuració de cookies»</strong> al peu de pàgina.
+			</p>
+
+			<h2>Què és una cookie</h2>
+			<p>
+				Una cookie és un petit fitxer que el navegador guarda al teu dispositiu quan visites un
+				lloc web. Serveix per recordar informació entre visites o durant la mateixa sessió.
+			</p>
+
+			<h2>Categories de cookies</h2>
+
+			<h3>Funcional (sempre activa)</h3>
+			<p>
+				Cookies tècniques necessàries perquè el lloc funcioni correctament (per exemple, recordar
+				la teva elecció de consentiment). No es poden desactivar perquè el lloc no funcionaria
+				sense elles.
+			</p>
+
+			<h3>Preferències</h3>
+			<p>
+				Permetrien recordar opcions de la teva visita (com l'idioma triat). Actualment no
+				s'utilitza cap cookie d'aquesta categoria a part de l'emmagatzematge de la teva pròpia
+				elecció de consentiment.
+			</p>
+
+			<h3>Estadístiques</h3>
+			<p>
+				Utilitzem <strong>Google Analytics 4</strong> per entendre, de forma anònima i agregada,
+				com es fa servir la web (pàgines visitades, temps de visita...). Aquestes cookies només
+				s'activen si les acceptes. Pots consultar la política de privadesa de Google a
+				<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+					policies.google.com/privacy</a>.
+			</p>
+
+			<h3>Màrqueting</h3>
+			<p>
+				Actualment <strong>no</strong> utilitzem cap cookie de màrqueting ni publicitat. Mantenim
+				la categoria preparada al selector de consentiment per si en el futur s'hi afegeix
+				publicitat o remarketing; en aquest cas s'actualitzarà aquesta pàgina.
+			</p>
+
+			<h2>Com gestionar el teu consentiment</h2>
+			<p>
+				En la teva primera visita et mostrem un avís on pots acceptar totes les cookies,
+				rebutjar-les o personalitzar quines categories acceptes. Pots tornar a obrir aquest
+				selector sempre que vulguis des del botó <strong>«Configuració de cookies»</strong> al
+				peu de qualsevol pàgina.
+			</p>
+		</main>
+		<Footer />
+		<CookieConsentBanner />
+	</body>
+</html>
+
+<style>
+	.legal-page {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 3rem 1.5rem 5rem;
+	}
+
+	.legal-page h1 {
+		font-size: 2.2rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.legal-page h2 {
+		font-size: 1.3rem;
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.legal-page h3 {
+		font-size: 1.05rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.legal-page p {
+		line-height: 1.6;
+		color: var(--color-navy);
+	}
+
+	.legal-page a {
+		color: var(--color-navy);
+		text-decoration: underline;
+	}
+</style>

@@ -13,8 +13,8 @@ L'ID de mesurament de GA4 viu en una variable d'entorn (`PUBLIC_GA4_MEASUREMENT_
 hardcodejat — es passa com a Build Arg de Docker (veure `Dockerfile`), no com a variable
 d'entorn de runtime: el lloc és estàtic i el `npm run build` es fa dins la imatge, servit
 després per nginx sense llegir cap `env`. El consentiment es gestiona amb
-`updateAnalyticsConsent()` a `src/lib/analytics.ts`, encara sense connectar (no hi ha banner
-de cookies implementat).
+`updateAnalyticsConsent()` a `src/lib/analytics.ts`, connectat al banner de cookies
+(`src/lib/consent.ts` — veure bloc `revisor-web:consentimiento`).
 <!-- revisor-web:analitica:gsc-verificado-externo -->
 Search Console verificat per registre TXT al DNS (mètode extern, sense rastre al codi).
 <!-- revisor-web:analitica:despliegue-dokploy -->
@@ -23,6 +23,17 @@ Build-time Arguments del servei (build-time, no runtime). Verificat en producci�
 2026-08-09 (event `page_view` real a GA4 Tiempo real/DebugView).
 Per al tractament complet: `/revisor-web:revisar analitica`.
 <!-- /revisor-web:analitica -->
+
+<!-- revisor-web:consentimiento -->
+## Consentiment de cookies
+El consentiment es gestiona per categories (Funcional sempre activa; Preferències,
+Estadístiques i Màrqueting commutables) a `src/lib/consent.ts` (estat a `localStorage`
+`cookie-consent-v1`) i el banner `src/components/CookieConsentBanner.astro`; es reobre amb el
+botó «Configuració de cookies» del `Footer.astro`. Estadístiques governa `analytics_storage`;
+Màrqueting governa `ad_storage`/`ad_user_data`/`ad_personalization` (sense cap cookie de
+màrqueting real encara). Pàgina `/politica-cookies` amb el detall.
+Per al tractament complet: `/revisor-web:revisar consentimiento`.
+<!-- /revisor-web:consentimiento -->
 
 ## Development
 

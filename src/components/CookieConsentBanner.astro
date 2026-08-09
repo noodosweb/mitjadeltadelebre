@@ -1,0 +1,285 @@
+---
+---
+
+<div class="cookie-banner" id="cookie-banner" hidden>
+	<div class="cookie-banner-inner">
+		<p class="cookie-banner-text">
+			Utilitzem cookies pròpies (necessàries per al funcionament del lloc) i, si ho acceptes,
+			cookies d'estadístiques (Google Analytics) per entendre com es fa servir la web. Pots
+			acceptar-les totes, rebutjar-les o personalitzar-ne l'ús. Més informació a la
+			<a href="/politica-cookies">política de cookies</a>.
+		</p>
+		<div class="cookie-banner-actions">
+			<button type="button" class="cookie-btn cookie-btn-ghost" id="cookie-customize">
+				Personalitzar
+			</button>
+			<button type="button" class="cookie-btn cookie-btn-outline" id="cookie-reject">
+				Rebutjar
+			</button>
+			<button type="button" class="cookie-btn cookie-btn-primary" id="cookie-accept">
+				Acceptar totes
+			</button>
+		</div>
+	</div>
+</div>
+
+<div class="cookie-modal" id="cookie-modal" hidden>
+	<div class="cookie-modal-backdrop" id="cookie-modal-backdrop"></div>
+	<div class="cookie-modal-panel" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+		<h2 id="cookie-modal-title">Configuració de cookies</h2>
+
+		<div class="cookie-category">
+			<div class="cookie-category-header">
+				<span class="cookie-category-name">Funcional</span>
+				<input type="checkbox" checked disabled aria-label="Funcional (sempre activa)" />
+			</div>
+			<p>Necessàries perquè el lloc funcioni correctament. Sempre actives.</p>
+		</div>
+
+		<div class="cookie-category">
+			<div class="cookie-category-header">
+				<span class="cookie-category-name">Preferències</span>
+				<input type="checkbox" id="cookie-cat-preferencies" aria-label="Preferències" />
+			</div>
+			<p>Recorden opcions de la teva visita (com l'idioma triat).</p>
+		</div>
+
+		<div class="cookie-category">
+			<div class="cookie-category-header">
+				<span class="cookie-category-name">Estadístiques</span>
+				<input type="checkbox" id="cookie-cat-estadistiques" aria-label="Estadístiques" />
+			</div>
+			<p>Google Analytics: ens ajuden a entendre com es fa servir la web, de forma anònima.</p>
+		</div>
+
+		<div class="cookie-category">
+			<div class="cookie-category-header">
+				<span class="cookie-category-name">Màrqueting</span>
+				<input type="checkbox" id="cookie-cat-marketing" aria-label="Màrqueting" />
+			</div>
+			<p>Actualment no fem servir cap cookie de màrqueting. Deixem la categoria preparada per si
+				en el futur s'afegeix publicitat o remarketing.</p>
+		</div>
+
+		<div class="cookie-modal-actions">
+			<button type="button" class="cookie-btn cookie-btn-outline" id="cookie-modal-close">
+				Cancel·lar
+			</button>
+			<button type="button" class="cookie-btn cookie-btn-primary" id="cookie-modal-save">
+				Desar preferències
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	import { acceptAll, getStoredConsent, initConsent, rejectAll, saveConsent } from '../lib/consent';
+
+	const banner = document.getElementById('cookie-banner') as HTMLElement;
+	const modal = document.getElementById('cookie-modal') as HTMLElement;
+	const prefsInput = document.getElementById('cookie-cat-preferencies') as HTMLInputElement;
+	const statsInput = document.getElementById('cookie-cat-estadistiques') as HTMLInputElement;
+	const marketingInput = document.getElementById('cookie-cat-marketing') as HTMLInputElement;
+
+	function hideBanner() {
+		banner.hidden = true;
+	}
+
+	function showBanner() {
+		banner.hidden = false;
+	}
+
+	function openModal() {
+		const stored = getStoredConsent();
+		prefsInput.checked = stored?.categories.preferencies ?? false;
+		statsInput.checked = stored?.categories.estadistiques ?? false;
+		marketingInput.checked = stored?.categories.marketing ?? false;
+		modal.hidden = false;
+	}
+
+	function closeModal() {
+		modal.hidden = true;
+	}
+
+	document.getElementById('cookie-accept')?.addEventListener('click', () => {
+		acceptAll();
+		hideBanner();
+	});
+
+	document.getElementById('cookie-reject')?.addEventListener('click', () => {
+		rejectAll();
+		hideBanner();
+	});
+
+	document.getElementById('cookie-customize')?.addEventListener('click', openModal);
+	document.getElementById('cookie-modal-close')?.addEventListener('click', closeModal);
+	document.getElementById('cookie-modal-backdrop')?.addEventListener('click', closeModal);
+
+	document.getElementById('cookie-modal-save')?.addEventListener('click', () => {
+		saveConsent({
+			preferencies: prefsInput.checked,
+			estadistiques: statsInput.checked,
+			marketing: marketingInput.checked,
+		});
+		closeModal();
+		hideBanner();
+	});
+
+	document.getElementById('reopen-cookie-settings')?.addEventListener('click', (event) => {
+		event.preventDefault();
+		openModal();
+	});
+
+	if (getStoredConsent()) {
+		initConsent();
+	} else {
+		showBanner();
+	}
+
+</script>
+
+<style>
+	.cookie-banner {
+		position: fixed;
+		inset: auto 0 0 0;
+		z-index: 1000;
+		background-color: var(--color-navy-dark);
+		color: #fff;
+		box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
+	}
+
+	.cookie-banner-inner {
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 1.25rem 1.5rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.cookie-banner-text {
+		flex: 1 1 320px;
+		margin: 0;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.85);
+	}
+
+	.cookie-banner-text a {
+		color: #fff;
+		text-decoration: underline;
+	}
+
+	.cookie-banner-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+	}
+
+	.cookie-btn {
+		font-family: var(--font-sans);
+		font-weight: 700;
+		font-size: 0.8rem;
+		border-radius: 999px;
+		padding: 0.6rem 1.1rem;
+		cursor: pointer;
+		border: 1px solid transparent;
+		white-space: nowrap;
+	}
+
+	.cookie-btn-primary {
+		background-color: var(--color-accent-gold);
+		color: var(--color-navy-dark);
+	}
+
+	.cookie-btn-outline {
+		background-color: transparent;
+		border-color: rgba(255, 255, 255, 0.4);
+		color: #fff;
+	}
+
+	.cookie-btn-ghost {
+		background-color: transparent;
+		border: none;
+		color: rgba(255, 255, 255, 0.75);
+		text-decoration: underline;
+	}
+
+	.cookie-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 1100;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.cookie-modal-backdrop {
+		position: absolute;
+		inset: 0;
+		background-color: rgba(3, 27, 50, 0.6);
+	}
+
+	.cookie-modal-panel {
+		position: relative;
+		background-color: #fff;
+		color: var(--color-navy);
+		border-radius: 12px;
+		padding: 2rem;
+		max-width: 480px;
+		width: calc(100% - 2rem);
+		max-height: calc(100vh - 3rem);
+		overflow-y: auto;
+	}
+
+	.cookie-modal-panel h2 {
+		font-size: 1.2rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.cookie-category {
+		padding: 0.9rem 0;
+		border-bottom: 1px solid var(--color-gray-light);
+	}
+
+	.cookie-category:first-of-type {
+		border-top: 1px solid var(--color-gray-light);
+	}
+
+	.cookie-category-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-weight: 700;
+	}
+
+	.cookie-category p {
+		margin: 0.35rem 0 0;
+		font-size: 0.82rem;
+		color: var(--color-gray-mid);
+	}
+
+	.cookie-modal-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	@media (max-width: 640px) {
+		.cookie-banner-inner {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.cookie-banner-actions {
+			justify-content: stretch;
+		}
+
+		.cookie-btn {
+			flex: 1;
+			text-align: center;
+		}
+	}
+</style>
