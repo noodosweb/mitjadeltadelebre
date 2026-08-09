@@ -69,6 +69,10 @@ const jsonLd = {
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
+		<script>
+			import { initAnalytics } from '../lib/analytics';
+			initAnalytics();
+		</script>
 		<Nav />
 		<Hero />
 		<Galeria />

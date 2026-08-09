@@ -14,5 +14,9 @@
   "dependencies": {
     "@fontsource/montserrat": "^5.3.0",
     "astro": "^7.1.4"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.1",
+    "vitest": "^4.1.10"
   }
 }
