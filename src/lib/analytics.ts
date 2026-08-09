@@ -40,20 +40,6 @@ export function initAnalytics() {
   document.head.appendChild(script);
 }
 
-// Mapeo categoría→señal fijo (contrato compartido, references/consent-mode-contrato.md):
-// Estadístiques -> analytics_storage; Màrqueting -> ad_storage + ad_user_data + ad_personalization.
-export function updateAnalyticsConsent(categories: {
-  estadistiques: boolean;
-  marketing: boolean;
-}) {
-  window.gtag?.("consent", "update", {
-    analytics_storage: categories.estadistiques ? "granted" : "denied",
-    ad_storage: categories.marketing ? "granted" : "denied",
-    ad_user_data: categories.marketing ? "granted" : "denied",
-    ad_personalization: categories.marketing ? "granted" : "denied",
-  });
-}
-
 // gtag('config', ...) solo dispara un page_view automático en la carga inicial del
 // documento, y siempre bajo consentimiento 'denied' (Consent Mode v2 empieza así) — ese hit
 // queda suprimido para siempre. Este sitio es una única página estática sin router cliente,

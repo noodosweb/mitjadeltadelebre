@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import { beforeEach, describe, expect, it } from "vitest";
-import { initAnalytics, trackPageView, updateAnalyticsConsent } from "./analytics";
+import { initAnalytics, trackPageView } from "./analytics";
 
 describe("analytics", () => {
   beforeEach(() => {
@@ -20,46 +20,6 @@ describe("analytics", () => {
     expect(window.dataLayer.indexOf(consentDefault)).toBeLessThan(
       window.dataLayer.indexOf(configCall)
     );
-  });
-
-  it("updates consent to granted per category", () => {
-    initAnalytics();
-    updateAnalyticsConsent({ estadistiques: true, marketing: true });
-    const update = window.dataLayer.find(
-      (entry) => entry[0] === "consent" && entry[1] === "update"
-    );
-    expect(update[2]).toMatchObject({
-      analytics_storage: "granted",
-      ad_storage: "granted",
-      ad_user_data: "granted",
-      ad_personalization: "granted",
-    });
-  });
-
-  it("updates consent to denied per category", () => {
-    initAnalytics();
-    updateAnalyticsConsent({ estadistiques: false, marketing: false });
-    const update = window.dataLayer.find(
-      (entry) => entry[0] === "consent" && entry[1] === "update"
-    );
-    expect(update[2]).toMatchObject({
-      analytics_storage: "denied",
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-    });
-  });
-
-  it("keeps categories independent (marketing denied does not deny analytics)", () => {
-    initAnalytics();
-    updateAnalyticsConsent({ estadistiques: true, marketing: false });
-    const update = window.dataLayer.find(
-      (entry) => entry[0] === "consent" && entry[1] === "update"
-    );
-    expect(update[2]).toMatchObject({
-      analytics_storage: "granted",
-      ad_storage: "denied",
-    });
   });
 
   it("tracks a page view with the given path", () => {

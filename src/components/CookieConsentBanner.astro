@@ -1,240 +1,240 @@
----
----
-
-<div class="cookie-banner" id="cookie-banner" hidden>
-	<div class="cookie-banner-inner">
-		<p class="cookie-banner-text">
-			Utilitzem cookies pròpies (necessàries per al funcionament del lloc) i, si ho acceptes,
-			cookies d'estadístiques (Google Analytics) per entendre com es fa servir la web. Pots
-			acceptar-les totes, rebutjar-les o personalitzar-ne l'ús. Més informació a la
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="true" aria-label="Gestionar consentiment" hidden>
+	<div class="cookie-banner__inner">
+		<p class="cookie-banner__text">
+			Utilitzem cookies pròpies per al funcionament del lloc web i, si ho consentiu, per
+			mesurar-ne l'ús (Google Analytics). Més informació a la
 			<a href="/politica-cookies">política de cookies</a>.
 		</p>
-		<div class="cookie-banner-actions">
-			<button type="button" class="cookie-btn cookie-btn-ghost" id="cookie-customize">
-				Personalitzar
-			</button>
-			<button type="button" class="cookie-btn cookie-btn-outline" id="cookie-reject">
-				Rebutjar
-			</button>
-			<button type="button" class="cookie-btn cookie-btn-primary" id="cookie-accept">
-				Acceptar totes
-			</button>
-		</div>
-	</div>
-</div>
 
-<div class="cookie-modal" id="cookie-modal" hidden>
-	<div class="cookie-modal-backdrop" id="cookie-modal-backdrop"></div>
-	<div class="cookie-modal-panel" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
-		<h2 id="cookie-modal-title">Configuració de cookies</h2>
-
-		<div class="cookie-category">
-			<div class="cookie-category-header">
-				<span class="cookie-category-name">Funcional</span>
-				<input type="checkbox" checked disabled aria-label="Funcional (sempre activa)" />
+		<div class="cookie-banner__categories">
+			<div class="cookie-category">
+				<div class="cookie-category__header">
+					<span>Funcional</span>
+					<span class="cookie-category__always-on">Sempre activa</span>
+				</div>
+				<p class="cookie-category__desc">Necessària pel funcionament bàsic del lloc web. No es pot desactivar.</p>
 			</div>
-			<p>Necessàries perquè el lloc funcioni correctament. Sempre actives.</p>
-		</div>
 
-		<div class="cookie-category">
-			<div class="cookie-category-header">
-				<span class="cookie-category-name">Preferències</span>
-				<input type="checkbox" id="cookie-cat-preferencies" aria-label="Preferències" />
+			<div class="cookie-category">
+				<label class="cookie-category__header">
+					<span>Preferències</span>
+					<input type="checkbox" id="cookie-cat-preferences" />
+				</label>
+				<p class="cookie-category__desc">Recorda opcions no essencials triades per l'usuari.</p>
 			</div>
-			<p>Recorden opcions de la teva visita (com l'idioma triat).</p>
-		</div>
 
-		<div class="cookie-category">
-			<div class="cookie-category-header">
-				<span class="cookie-category-name">Estadístiques</span>
-				<input type="checkbox" id="cookie-cat-estadistiques" aria-label="Estadístiques" />
+			<div class="cookie-category">
+				<label class="cookie-category__header">
+					<span>Estadístiques</span>
+					<input type="checkbox" id="cookie-cat-statistics" />
+				</label>
+				<p class="cookie-category__desc">Ens permet mesurar l'ús anònim del lloc web (Google Analytics).</p>
 			</div>
-			<p>Google Analytics: ens ajuden a entendre com es fa servir la web, de forma anònima.</p>
-		</div>
 
-		<div class="cookie-category">
-			<div class="cookie-category-header">
-				<span class="cookie-category-name">Màrqueting</span>
-				<input type="checkbox" id="cookie-cat-marketing" aria-label="Màrqueting" />
+			<div class="cookie-category">
+				<label class="cookie-category__header">
+					<span>Màrqueting</span>
+					<input type="checkbox" id="cookie-cat-marketing" />
+				</label>
+				<p class="cookie-category__desc">
+					Actualment no fem servir cap cookie de màrqueting. Categoria preparada per si en el
+					futur s'hi afegeix publicitat o remarketing.
+				</p>
 			</div>
-			<p>Actualment no fem servir cap cookie de màrqueting. Deixem la categoria preparada per si
-				en el futur s'afegeix publicitat o remarketing.</p>
 		</div>
 
-		<div class="cookie-modal-actions">
-			<button type="button" class="cookie-btn cookie-btn-outline" id="cookie-modal-close">
-				Cancel·lar
-			</button>
-			<button type="button" class="cookie-btn cookie-btn-primary" id="cookie-modal-save">
-				Desar preferències
-			</button>
+		<div class="cookie-banner__actions">
+			<button type="button" id="cookie-reject" class="cookie-btn cookie-btn--secondary">Rebutjar-ho tot</button>
+			<button type="button" id="cookie-save" class="cookie-btn cookie-btn--secondary">Desar preferències</button>
+			<button type="button" id="cookie-accept" class="cookie-btn cookie-btn--primary">Acceptar-ho tot</button>
 		</div>
 	</div>
 </div>
 
 <script>
-	import { mountCookieBanner } from '../lib/consent';
-	mountCookieBanner();
+	import { trackPageView } from "../lib/analytics";
+	import {
+		applyConsent,
+		getStoredConsent,
+		saveConsent,
+		OPEN_EVENT,
+		type ConsentCategories,
+	} from "../lib/consent";
+
+	const banner = document.getElementById("cookie-banner") as HTMLElement;
+	const preferencesInput = document.getElementById("cookie-cat-preferences") as HTMLInputElement;
+	const statisticsInput = document.getElementById("cookie-cat-statistics") as HTMLInputElement;
+	const marketingInput = document.getElementById("cookie-cat-marketing") as HTMLInputElement;
+
+	const ALL_ON: ConsentCategories = { preferences: true, statistics: true, marketing: true };
+	const ALL_OFF: ConsentCategories = { preferences: false, statistics: false, marketing: false };
+
+	function syncInputs(categories: ConsentCategories) {
+		preferencesInput.checked = categories.preferences;
+		statisticsInput.checked = categories.statistics;
+		marketingInput.checked = categories.marketing;
+	}
+
+	function readInputs(): ConsentCategories {
+		return {
+			preferences: preferencesInput.checked,
+			statistics: statisticsInput.checked,
+			marketing: marketingInput.checked,
+		};
+	}
+
+	function decide(chosen: ConsentCategories) {
+		const previous = getStoredConsent();
+		saveConsent(chosen);
+		applyConsent(chosen);
+		// gtag('config', ...) del <head> ja va disparar sota consentiment 'denied' per defecte;
+		// aquest page_view manual recupera el hit perdut d'aquesta càrrega si s'acaba de concedir.
+		if (chosen.statistics && !previous?.statistics) {
+			trackPageView(window.location.pathname);
+		}
+		banner.setAttribute("hidden", "");
+	}
+
+	const stored = getStoredConsent();
+	if (!stored) {
+		syncInputs(ALL_OFF);
+		banner.removeAttribute("hidden");
+	} else {
+		syncInputs(stored);
+	}
+
+	document.getElementById("cookie-accept")!.addEventListener("click", () => decide(ALL_ON));
+	document.getElementById("cookie-reject")!.addEventListener("click", () => decide(ALL_OFF));
+	document.getElementById("cookie-save")!.addEventListener("click", () => decide(readInputs()));
+
+	window.addEventListener(OPEN_EVENT, () => {
+		syncInputs(getStoredConsent() ?? ALL_OFF);
+		banner.removeAttribute("hidden");
+	});
 </script>
 
 <style>
-	/* Tokens del banner: único punto de personalización por proyecto. Redefine estos 6
-	   custom properties (o los --color-*/--font-sans de los que heredan por defecto) para
-	   adaptar colores y tipografía sin tocar el resto del componente. */
-	.cookie-banner,
-	.cookie-modal {
+	/* Tokens de tema: único punto de personalización por proyecto. Redefine estos custom
+	   properties (o los --color-*/--font-sans equivalentes del proyecto) para adaptar colores y
+	   tipografía sin tocar el resto del componente ni su estructura/IDs. */
+	.cookie-banner {
 		--cookie-font: var(--font-sans, system-ui, sans-serif);
-		--cookie-surface-dark: var(--color-navy-dark, #1a1a1a);
-		--cookie-surface-light: #fff;
-		--cookie-text-on-dark: rgba(255, 255, 255, 0.85);
+		--cookie-surface: var(--color-navy-dark, #1a1a1a);
+		--cookie-text: #fff;
 		--cookie-accent: var(--color-accent-gold, #e8b84b);
 		--cookie-accent-text: var(--color-navy-dark, #1a1a1a);
-		--cookie-radius: 999px;
+		--cookie-radius: 0.5rem;
 	}
 
 	.cookie-banner {
 		position: fixed;
-		inset: auto 0 0 0;
-		z-index: 1000;
-		background-color: var(--cookie-surface-dark);
-		color: var(--cookie-text-on-dark);
-		box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 9999;
+		padding: 1rem;
+		max-height: 100vh;
+		overflow-y: auto;
 		font-family: var(--cookie-font);
 	}
 
-	.cookie-banner-inner {
-		max-width: 1100px;
+	.cookie-banner__inner {
+		max-width: 40rem;
 		margin: 0 auto;
+		background: var(--cookie-surface);
+		color: var(--cookie-text);
+		border-radius: var(--cookie-radius);
 		padding: 1.25rem 1.5rem;
 		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1.25rem;
+		flex-direction: column;
+		gap: 1rem;
+		box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
 	}
 
-	.cookie-banner-text {
-		flex: 1 1 320px;
+	.cookie-banner__text {
+		font-size: 0.875rem;
+		line-height: 1.6;
 		margin: 0;
-		font-size: 0.85rem;
-		line-height: 1.5;
-		color: var(--cookie-text-on-dark);
+		color: var(--cookie-text);
 	}
 
-	.cookie-banner-text a {
-		color: var(--cookie-surface-light);
+	.cookie-banner__text a {
+		color: var(--cookie-accent);
 		text-decoration: underline;
 	}
 
-	.cookie-banner-actions {
+	.cookie-banner__categories {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 0.6rem;
-	}
-
-	.cookie-btn {
-		font-family: var(--cookie-font);
-		font-weight: 700;
-		font-size: 0.8rem;
-		border-radius: var(--cookie-radius);
-		padding: 0.6rem 1.1rem;
-		cursor: pointer;
-		border: 1px solid transparent;
-		white-space: nowrap;
-	}
-
-	.cookie-btn-primary {
-		background-color: var(--cookie-accent);
-		color: var(--cookie-accent-text);
-	}
-
-	.cookie-btn-outline {
-		background-color: transparent;
-		border-color: rgba(255, 255, 255, 0.4);
-		color: var(--cookie-surface-light);
-	}
-
-	.cookie-btn-ghost {
-		background-color: transparent;
-		border: none;
-		color: var(--cookie-text-on-dark);
-		text-decoration: underline;
-	}
-
-	.cookie-modal {
-		position: fixed;
-		inset: 0;
-		z-index: 1100;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: var(--cookie-font);
-	}
-
-	.cookie-modal-backdrop {
-		position: absolute;
-		inset: 0;
-		background-color: rgba(3, 27, 50, 0.6);
-	}
-
-	.cookie-modal-panel {
-		position: relative;
-		background-color: var(--cookie-surface-light);
-		color: var(--color-navy, #1a1a1a);
-		border-radius: 12px;
-		padding: 2rem;
-		max-width: 480px;
-		width: calc(100% - 2rem);
-		max-height: calc(100vh - 3rem);
-		overflow-y: auto;
-	}
-
-	.cookie-modal-panel h2 {
-		font-size: 1.2rem;
-		margin-bottom: 1.25rem;
+		flex-direction: column;
+		gap: 0.75rem;
 	}
 
 	.cookie-category {
-		padding: 0.9rem 0;
-		border-bottom: 1px solid var(--color-gray-light, #e6e8ea);
+		border-top: 1px solid rgba(255, 255, 255, 0.15);
+		padding-top: 0.75rem;
 	}
 
-	.cookie-category:first-of-type {
-		border-top: 1px solid var(--color-gray-light, #e6e8ea);
-	}
-
-	.cookie-category-header {
+	.cookie-category__header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-weight: 700;
+		font-weight: 600;
+		font-size: 0.9rem;
+		cursor: pointer;
 	}
 
-	.cookie-category p {
-		margin: 0.35rem 0 0;
-		font-size: 0.82rem;
-		color: var(--color-gray-mid, #666);
+	.cookie-category__always-on {
+		font-weight: 400;
+		opacity: 0.7;
+		font-size: 0.75rem;
 	}
 
-	.cookie-modal-actions {
+	.cookie-category__desc {
+		margin: 0.25rem 0 0;
+		font-size: 0.8rem;
+		color: var(--cookie-text);
+		opacity: 0.8;
+		line-height: 1.5;
+	}
+
+	.cookie-category__header input[type="checkbox"] {
+		width: 1.15rem;
+		height: 1.15rem;
+		cursor: pointer;
+	}
+
+	.cookie-banner__actions {
 		display: flex;
-		justify-content: flex-end;
+		flex-wrap: wrap;
+		align-items: center;
 		gap: 0.75rem;
-		margin-top: 1.5rem;
 	}
 
-	@media (max-width: 640px) {
-		.cookie-banner-inner {
-			flex-direction: column;
-			align-items: stretch;
-		}
+	.cookie-btn {
+		cursor: pointer;
+		border: none;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		padding: 0.625rem 1.25rem;
+		min-height: 44px;
+		transition: opacity 0.15s;
+		font-family: inherit;
+	}
 
-		.cookie-banner-actions {
-			justify-content: stretch;
-		}
+	.cookie-btn:hover {
+		opacity: 0.85;
+	}
 
-		.cookie-btn {
-			flex: 1;
-			text-align: center;
-		}
+	.cookie-btn--primary {
+		background: var(--cookie-accent);
+		color: var(--cookie-accent-text);
+		font-weight: 600;
+	}
+
+	.cookie-btn--secondary {
+		background: transparent;
+		color: var(--cookie-text);
+		opacity: 0.7;
+		text-decoration: underline;
 	}
 </style>

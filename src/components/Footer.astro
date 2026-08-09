@@ -98,6 +98,15 @@ const legalLinks = [
   </div>
 </footer>
 
+<script>
+  import { openConsentPanel } from '../lib/consent';
+
+  document.getElementById('reopen-cookie-settings')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    openConsentPanel();
+  });
+</script>
+
 <style>
   .footer {
     background-color: var(--color-navy-dark);

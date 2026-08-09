@@ -68,12 +68,18 @@ const jsonLd = {
 		<meta name="twitter:image" content={ogImageUrl} />
 
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-	</head>
-	<body>
+
+		<!-- GA4 amb Consent Mode v2 (denied per defecte fins que CookieConsentBanner ho actualitzi) -->
 		<script>
 			import { initAnalytics } from '../lib/analytics';
+			import { initConsent } from '../lib/consent';
+			// initAnalytics() sempre abans: crea el núcleo (bootstrap + consent default) si no existeix.
+			// initConsent() només restaura l'estat de categories ja decidit, mai crea un altre bootstrap.
 			initAnalytics();
+			initConsent();
 		</script>
+	</head>
+	<body>
 		<Nav />
 		<Hero />
 		<Galeria />

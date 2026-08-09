@@ -12,9 +12,10 @@ tractament complet: `/revisor-web:revisar metadatos`.
 L'ID de mesurament de GA4 viu en una variable d'entorn (`PUBLIC_GA4_MEASUREMENT_ID`), mai
 hardcodejat — es passa com a Build Arg de Docker (veure `Dockerfile`), no com a variable
 d'entorn de runtime: el lloc és estàtic i el `npm run build` es fa dins la imatge, servit
-després per nginx sense llegir cap `env`. El consentiment es gestiona amb
-`updateAnalyticsConsent()` a `src/lib/analytics.ts`, connectat al banner de cookies
-(`src/lib/consent.ts` — veure bloc `revisor-web:consentimiento`).
+després per nginx sense llegir cap `env`. `src/lib/analytics.ts` és autosuficient (bootstrap
+propi de `window.gtag` guardat amb `if (!window.gtag)`); el consentiment el gestiona per
+categories `src/lib/consent.ts`, amb el seu propi bootstrap equivalent — veure bloc
+`revisor-web:consentimiento`.
 <!-- revisor-web:analitica:gsc-verificado-externo -->
 Search Console verificat per registre TXT al DNS (mètode extern, sense rastre al codi).
 <!-- revisor-web:analitica:despliegue-dokploy -->
@@ -26,12 +27,17 @@ Per al tractament complet: `/revisor-web:revisar analitica`.
 
 <!-- revisor-web:consentimiento -->
 ## Consentiment de cookies
-El consentiment es gestiona per categories (Funcional sempre activa; Preferències,
-Estadístiques i Màrqueting commutables) a `src/lib/consent.ts` (estat a `localStorage`
-`cookie-consent-v1`) i el banner `src/components/CookieConsentBanner.astro`; es reobre amb el
-botó «Configuració de cookies» del `Footer.astro`. Estadístiques governa `analytics_storage`;
+El consentiment es gestiona per categories (Funcional sempre activa, sense checkbox;
+Preferències, Estadístiques i Màrqueting commutables) a `src/lib/consent.ts` — mòdul
+autosuficient, no depèn de `src/lib/analytics.ts` (cadascun comprova/crea el seu propi
+bootstrap `window.gtag` amb `if (!window.gtag)`, contracte compartit). Estat a `localStorage`
+`cookie-consent-v1`. Banner `src/components/CookieConsentBanner.astro`: panell únic amb les
+categories sempre visibles (sense modal separat) i tres botons (Rebutjar/Desar/Acceptar-ho tot);
+es reobre disparant `openConsentPanel()` (event `revisor-web:open-consent`) des del botó
+«Configuració de cookies» del `Footer.astro`. Estadístiques governa `analytics_storage`;
 Màrqueting governa `ad_storage`/`ad_user_data`/`ad_personalization` (sense cap cookie de
-màrqueting real encara). Pàgina `/politica-cookies` amb el detall.
+màrqueting real encara). Colors del banner: custom properties `--cookie-*` a l'arrel del
+component. Pàgina `/politica-cookies` amb el detall.
 Per al tractament complet: `/revisor-web:revisar consentimiento`.
 <!-- /revisor-web:consentimiento -->
 

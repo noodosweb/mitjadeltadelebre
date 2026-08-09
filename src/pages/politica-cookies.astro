@@ -18,12 +18,15 @@ const description =
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
-	</head>
-	<body>
+
 		<script>
 			import { initAnalytics } from '../lib/analytics';
+			import { initConsent } from '../lib/consent';
 			initAnalytics();
+			initConsent();
 		</script>
+	</head>
+	<body>
 		<Nav />
 		<main class="legal-page">
 			<h1>Política de cookies</h1>

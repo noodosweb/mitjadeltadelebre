@@ -1,132 +1,88 @@
-import { updateAnalyticsConsent } from "./analytics";
-
-const STORAGE_KEY = "cookie-consent-v1";
-
-export interface ConsentCategories {
-  funcional: true;
-  preferencies: boolean;
-  estadistiques: boolean;
+export type ConsentCategories = {
+  preferences: boolean;
+  statistics: boolean;
   marketing: boolean;
-}
+};
 
-interface StoredConsent {
+type StoredConsent = {
   version: 1;
   categories: ConsentCategories;
   decidedAt: string;
+};
+
+const STORAGE_KEY = "cookie-consent-v1";
+export const OPEN_EVENT = "revisor-web:open-consent";
+
+declare global {
+  interface Window {
+    dataLayer: unknown[][];
+    gtag?: (...args: unknown[]) => void;
+  }
 }
 
-export function getStoredConsent(): StoredConsent | null {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return null;
+// CRÍTICO: gtag.js exige el objeto "arguments" nativo, no un array normal — con un array el
+// dataLayer parece sano pero ningún hit llega jamás a Google (mismo detalle que
+// src/lib/analytics.ts y consent-mode-contrato.md). No lo "limpies" con rest params.
+function gtag(...args: unknown[]) {
+  window.dataLayer = window.dataLayer || [];
+  // eslint-disable-next-line prefer-rest-params -- hace falta el "arguments" real, no args
+  window.dataLayer.push(arguments as unknown as unknown[]);
+}
+
+export function getStoredConsent(): ConsentCategories | null {
   try {
-    return JSON.parse(raw) as StoredConsent;
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StoredConsent;
+    if (parsed.version !== 1) return null;
+    return parsed.categories;
   } catch {
     return null;
   }
 }
 
-export function saveConsent(
-  categories: Omit<ConsentCategories, "funcional">
-): void {
+export function saveConsent(categories: ConsentCategories) {
   const stored: StoredConsent = {
     version: 1,
-    categories: { funcional: true, ...categories },
+    categories,
     decidedAt: new Date().toISOString(),
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
-  updateAnalyticsConsent({
-    estadistiques: categories.estadistiques,
-    marketing: categories.marketing,
+}
+
+// Mapeo categoría→señal del contrato compartido (fijo): Estadístiques→analytics_storage;
+// Màrqueting→ad_storage+ad_user_data+ad_personalization; Funcional/Preferències→sin señal.
+export function applyConsent(categories: ConsentCategories) {
+  window.gtag?.("consent", "update", {
+    analytics_storage: categories.statistics ? "granted" : "denied",
+    ad_storage: categories.marketing ? "granted" : "denied",
+    ad_user_data: categories.marketing ? "granted" : "denied",
+    ad_personalization: categories.marketing ? "granted" : "denied",
   });
 }
 
-export function acceptAll(): void {
-  saveConsent({ preferencies: true, estadistiques: true, marketing: true });
-}
-
-export function rejectAll(): void {
-  saveConsent({ preferencies: false, estadistiques: false, marketing: false });
-}
-
-// Al arrancar: si ya hay una decisión guardada, aplícala al núcleo de analitica (gtag ya
-// arrancó con consent default 'denied' en initAnalytics()); si no hay decisión, no toques
-// nada — el banner es quien pedirá la decisión.
-export function initConsent(): void {
-  const stored = getStoredConsent();
-  if (!stored) return;
-  updateAnalyticsConsent({
-    estadistiques: stored.categories.estadistiques,
-    marketing: stored.categories.marketing,
-  });
-}
-
-// Cablea el banner (`CookieConsentBanner.astro`) contra el DOM ya renderizado por sus IDs
-// fijos. Vive aquí, no en el <script> del componente, para poder testear la interacción real
-// (clicks, checkboxes, reapertura) con jsdom en vez de solo las funciones de persistencia en
-// aislamiento — un bug de wiring (listener no adjuntado, checkbox leído mal) no lo detecta un
-// test que solo llama a saveConsent() directamente.
-export function mountCookieBanner(): void {
-  const banner = document.getElementById("cookie-banner") as HTMLElement | null;
-  const modal = document.getElementById("cookie-modal") as HTMLElement | null;
-  if (!banner || !modal) return;
-
-  // Idempotente: si ya se cableó este banner (p. ej. doble montaje en dev), no dupliques listeners.
-  if (banner.dataset.consentMounted === "true") return;
-  banner.dataset.consentMounted = "true";
-
-  const prefsInput = document.getElementById("cookie-cat-preferencies") as HTMLInputElement;
-  const statsInput = document.getElementById("cookie-cat-estadistiques") as HTMLInputElement;
-  const marketingInput = document.getElementById("cookie-cat-marketing") as HTMLInputElement;
-
-  const hideBanner = () => {
-    banner.hidden = true;
-  };
-  const showBanner = () => {
-    banner.hidden = false;
-  };
-  const openModal = () => {
-    const stored = getStoredConsent();
-    prefsInput.checked = stored?.categories.preferencies ?? false;
-    statsInput.checked = stored?.categories.estadistiques ?? false;
-    marketingInput.checked = stored?.categories.marketing ?? false;
-    modal.hidden = false;
-  };
-  const closeModal = () => {
-    modal.hidden = true;
-  };
-
-  document.getElementById("cookie-accept")?.addEventListener("click", () => {
-    acceptAll();
-    hideBanner();
-  });
-
-  document.getElementById("cookie-reject")?.addEventListener("click", () => {
-    rejectAll();
-    hideBanner();
-  });
-
-  document.getElementById("cookie-customize")?.addEventListener("click", openModal);
-  document.getElementById("cookie-modal-close")?.addEventListener("click", closeModal);
-  document.getElementById("cookie-modal-backdrop")?.addEventListener("click", closeModal);
-
-  document.getElementById("cookie-modal-save")?.addEventListener("click", () => {
-    saveConsent({
-      preferencies: prefsInput.checked,
-      estadistiques: statsInput.checked,
-      marketing: marketingInput.checked,
+// Contrato compartido: un solo bootstrap por proyecto. Si el núcleo ya existe (window.gtag
+// definido — creado por src/lib/analytics.ts del revisor analitica, caso A), NO se reescribe el
+// consent default: solo se restaura el estado guardado sobre él.
+export function initConsent() {
+  if (!window.gtag) {
+    window.dataLayer = window.dataLayer || [];
+    gtag("consent", "default", {
+      analytics_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
     });
-    closeModal();
-    hideBanner();
-  });
-
-  document.getElementById("reopen-cookie-settings")?.addEventListener("click", (event) => {
-    event.preventDefault();
-    openModal();
-  });
-
-  if (getStoredConsent()) {
-    initConsent();
-  } else {
-    showBanner();
+    window.gtag = gtag;
   }
+  const stored = getStoredConsent();
+  if (stored) {
+    applyConsent(stored);
+  }
+}
+
+// Reabre el panel desde cualquier punto del sitio (p. ej. el enlace "Configuració de cookies"
+// del footer).
+export function openConsentPanel() {
+  window.dispatchEvent(new Event(OPEN_EVENT));
 }
