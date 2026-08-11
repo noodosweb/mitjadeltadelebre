@@ -21,6 +21,7 @@ const content = {
     ],
     cta: 'Inscripcions',
     openMenu: 'Obrir menú',
+    homeAria: "Anar a l'inici",
     langLabel: 'CA',
     langOptions: [
       { code: 'ca' as Locale, label: 'Català' },
@@ -37,6 +38,7 @@ const content = {
     ],
     cta: 'Inscripciones',
     openMenu: 'Abrir menú',
+    homeAria: 'Ir a inicio',
     langLabel: 'ES',
     langOptions: [
       { code: 'ca' as Locale, label: 'Català' },
@@ -82,7 +84,9 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
   </div>
 
   <nav>
-    <Image src={logo} alt="Mitja Marató Delta de l'Ebre" />
+    <a href={pageMap.home[lang]} aria-label={t.homeAria} class="nav-logo-link">
+      <Image src={logo} alt="Mitja Marató Delta de l'Ebre" />
+    </a>
 
     <input type="checkbox" id="nav-toggle" class="nav-toggle-input" />
     <label for="nav-toggle" class="nav-toggle-label" aria-label={t.openMenu}>
@@ -136,7 +140,12 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
     padding: 0.5rem 1.5rem;
   }
 
-  nav > img {
+  .nav-logo-link {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .nav-logo-link img {
     height: 56px;
     width: auto;
     flex-shrink: 0;
@@ -304,7 +313,7 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
       padding: 0.5rem 1rem;
     }
 
-    nav > img {
+    .nav-logo-link img {
       height: 44px;
     }
 
