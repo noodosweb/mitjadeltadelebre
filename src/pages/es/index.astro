@@ -18,16 +18,16 @@ import { pageMap } from '../../i18n/page-map';
 
 const siteUrl = 'https://mitjadeltadelebre.com';
 const canonicalUrl = `${siteUrl}${pageMap.home.es}`;
-const title = 'Media Maratón Delta del Ebre — 1ª edición, 18 abril 2027';
+const title = "Mitja Marató Delta de l'Ebre — 1ª edición, 18 abril 2027";
 const description =
-	'La 1ª Media Maratón Delta del Ebre: 21,097 km por el Parque Natural, la primera media maratón de asfalto de Cataluña en un espacio natural protegido. 18 de abril de 2027.';
+	"La 1ª Mitja Marató Delta de l'Ebre: 21,097 km por el Parque Natural, la primera media maratón de asfalto de Cataluña en un espacio natural protegido. 18 de abril de 2027.";
 const ogImage = await getImage({ src: heroImage, width: 1200, height: 630 });
 const ogImageUrl = `${siteUrl}${ogImage.src}`;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'SportsEvent',
-	name: 'Media Maratón Delta del Ebre',
+	name: "Mitja Marató Delta de l'Ebre",
 	description,
 	startDate: '2027-04-18',
 	url: canonicalUrl,
@@ -63,7 +63,7 @@ const jsonLd = {
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content="Media Maratón Delta del Ebre" />
+		<meta property="og:site_name" content="Mitja Marató Delta de l'Ebre" />
 		<meta property="og:image" content={ogImageUrl} />
 
 		<meta name="twitter:card" content="summary_large_image" />
