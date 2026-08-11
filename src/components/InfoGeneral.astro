@@ -1,76 +1,119 @@
 ---
+import type { Locale } from '../i18n/page-map';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
 const videoId = 'mEQQQ2zMzQQ';
 
-const cards = [
-  {
-    label: 'Dia',
-    value: "18 d'abril de 2027",
-    paths: [
-      { d: 'M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z', opacity: 0.2 },
+// Les icones (paths SVG) són idèntiques en tots dos idiomes — només canvien label/value/text.
+const iconPaths = {
+  dia: [
+    { d: 'M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z', opacity: 0.2 },
+    {
+      d: 'M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z',
+    },
+  ],
+  hora: [
+    { d: 'M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z', opacity: 0.2 },
+    {
+      d: 'M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z',
+    },
+  ],
+  lloc: [
+    { d: 'M128,24a80,80,0,0,0-80,80c0,72,80,128,80,128s80-56,80-128A80,80,0,0,0,128,24Zm0,112a32,32,0,1,1,32-32A32,32,0,0,1,128,136Z', opacity: 0.2 },
+    {
+      d: 'M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z',
+    },
+  ],
+  reglament: [
+    { d: 'M208,88H152V32Z', opacity: 0.2 },
+    {
+      d: 'M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z',
+    },
+  ],
+};
+
+const content = {
+  ca: {
+    eyebrow: 'La cursa',
+    heading: 'Info general',
+    badges: ['1a edició', 'Parc Natural', 'Reserva de la Biosfera (UNESCO)'],
+    paragraph:
+      "El diumenge <strong>18 d'abril de 2027</strong> celebrarem la <strong>1a edició</strong> de la <strong>Mitja Marató del Delta de l'Ebre - Grup Oliva Motor</strong>, la <strong>primera mitja marató d'asfalt de Catalunya</strong> que es disputa íntegrament dins d'un Parc Natural. Un recorregut únic pels paisatges més emblemàtics del Delta, amb zones habilitades perquè família i amics puguin seguir la cursa de ben a prop. Una cita imprescindible per als amants del running i la natura.",
+    videoAlt: "Vídeo Mitja Marató Delta de l'Ebre",
+    playAria: 'Reprodueix el vídeo',
+    cards: [
+      { label: 'Dia', value: "18 d'abril de 2027", paths: iconPaths.dia },
+      { label: 'Hora', value: '09:00 h', paths: iconPaths.hora },
       {
-        d: 'M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z',
+        label: 'Lloc',
+        value: 'Poble Nou del Delta (Tarragona)',
+        link: 'https://maps.app.goo.gl/ZkinmzL4i6QqnvYz6',
+        paths: iconPaths.lloc,
+      },
+      {
+        label: 'Reglament',
+        value: "Descarrega'l en PDF",
+        link: '/docs/reglament-mitja-delta-de-lebre.pdf',
+        paths: iconPaths.reglament,
       },
     ],
   },
-  {
-    label: 'Hora',
-    value: '09:00 h',
-    paths: [
-      { d: 'M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z', opacity: 0.2 },
+  es: {
+    eyebrow: 'La carrera',
+    heading: 'Información general',
+    badges: ['1ª edición', 'Parque Natural', 'Reserva de la Biosfera (UNESCO)'],
+    paragraph:
+      "El domingo <strong>18 de abril de 2027</strong> celebraremos la <strong>1ª edición</strong> de la <strong>Media Maratón del Delta del Ebre - Grup Oliva Motor</strong>, la <strong>primera media maratón de asfalto de Cataluña</strong> que se disputa íntegramente dentro de un Parque Natural. Un recorrido único por los paisajes más emblemáticos del Delta, con zonas habilitadas para que familia y amigos puedan seguir la carrera muy de cerca. Una cita imprescindible para los amantes del running y la naturaleza.",
+    videoAlt: 'Vídeo Media Maratón Delta del Ebre',
+    playAria: 'Reproducir el vídeo',
+    cards: [
+      { label: 'Día', value: '18 de abril de 2027', paths: iconPaths.dia },
+      { label: 'Hora', value: '09:00 h', paths: iconPaths.hora },
       {
-        d: 'M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z',
+        label: 'Lugar',
+        value: 'Poble Nou del Delta (Tarragona)',
+        link: 'https://maps.app.goo.gl/ZkinmzL4i6QqnvYz6',
+        paths: iconPaths.lloc,
+      },
+      {
+        label: 'Reglamento',
+        value: 'Descárgalo en PDF',
+        link: '/docs/reglament-mitja-delta-de-lebre.pdf',
+        paths: iconPaths.reglament,
       },
     ],
   },
-  {
-    label: 'Lloc',
-    value: 'Poble Nou del Delta (Tarragona)',
-    link: 'https://maps.app.goo.gl/ZkinmzL4i6QqnvYz6',
-    paths: [
-      { d: 'M128,24a80,80,0,0,0-80,80c0,72,80,128,80,128s80-56,80-128A80,80,0,0,0,128,24Zm0,112a32,32,0,1,1,32-32A32,32,0,0,1,128,136Z', opacity: 0.2 },
-      {
-        d: 'M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z',
-      },
-    ],
-  },
-  {
-    label: 'Reglament',
-    value: 'Descarrega\'l en PDF',
-    link: '/docs/reglament-mitja-delta-de-lebre.pdf',
-    paths: [
-      { d: 'M208,88H152V32Z', opacity: 0.2 },
-      {
-        d: 'M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z',
-      },
-    ],
-  },
-];
+};
+
+const t = content[lang];
+const cards = t.cards;
 ---
 
 <section class="info-general" id="informacio">
   <div class="info-grid">
     <div class="info-text">
-      <span class="info-eyebrow">La cursa</span>
-      <h2>Info general</h2>
+      <span class="info-eyebrow">{t.eyebrow}</span>
+      <h2>{t.heading}</h2>
 
       <ul class="info-badges">
-        <li>1a edició</li>
-        <li>Parc Natural</li>
-        <li>Reserva de la Biosfera (UNESCO)</li>
+        {t.badges.map((badge) => <li>{badge}</li>)}
       </ul>
 
-      <p>
-        El diumenge <strong>18 d'abril de 2027</strong> celebrarem la <strong>1a edició</strong> de la <strong>Mitja Marató del Delta de l'Ebre - Grup Oliva Motor</strong>, la <strong>primera mitja marató d'asfalt de Catalunya</strong> que es disputa íntegrament dins d'un Parc Natural. Un recorregut únic pels paisatges més emblemàtics del Delta, amb zones habilitades perquè família i amics puguin seguir la cursa de ben a prop. Una cita imprescindible per als amants del running i la natura.
-      </p>
+      <p set:html={t.paragraph} />
     </div>
-    <div class="info-video-wrap" id="info-video" data-video-id={videoId}>
+    <div class="info-video-wrap" id="info-video" data-video-id={videoId} data-video-title={t.videoAlt}>
       <img
         class="info-video-poster"
         src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-        alt="Vídeo Mitja Marató Delta de l'Ebre"
+        alt={t.videoAlt}
         loading="eager"
       />
-      <button class="info-video-play" aria-label="Reprodueix el vídeo" type="button">
+      <button class="info-video-play" aria-label={t.playAria} type="button">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
       </button>
     </div>
@@ -107,7 +150,7 @@ const cards = [
       const videoId = wrap.getAttribute('data-video-id');
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-      iframe.title = "Vídeo Mitja Marató Delta de l'Ebre";
+      iframe.title = wrap.getAttribute('data-video-title') ?? '';
       iframe.allow =
         'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       iframe.allowFullscreen = true;

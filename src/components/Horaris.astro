@@ -1,18 +1,51 @@
 ---
 import { Image } from 'astro:assets';
 import bgImage from '../assets/images/fotos fotograf delta/_DSC5254.jpg';
+import type { Locale } from '../i18n/page-map';
 
-const timeline = [
-  { day: 'Dissabte', time: '10 - 20h', text: 'Entrega de dorsals', highlight: true },
-  { day: 'Dissabte', time: '10 - 20h', text: 'Fira del corredor' },
-  {
-    day: 'Diumenge',
-    time: '7 - 8:15h',
-    text: "Recollida exprés de dorsals (només per a qui ha pagat el suplement d'1€ a la inscripció)",
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+  ca: {
+    bgAlt: "Corredors a la Mitja Marató Delta de l'Ebre",
+    eyebrow: 'Entrega de dorsals',
+    heading: 'Horaris',
+    timeline: [
+      { day: 'Dissabte', time: '10 - 20h', text: 'Entrega de dorsals', highlight: true },
+      { day: 'Dissabte', time: '10 - 20h', text: 'Fira del corredor' },
+      {
+        day: 'Diumenge',
+        time: '7 - 8:15h',
+        text: "Recollida exprés de dorsals (només per a qui ha pagat el suplement d'1€ a la inscripció)",
+      },
+      { day: 'Diumenge', time: '9h', text: 'Sortida Mitja Marató', highlight: true },
+      { day: 'Diumenge', time: '12h', text: 'Entrega de trofeus' },
+    ],
   },
-  { day: 'Diumenge', time: '9h', text: 'Sortida Mitja Marató', highlight: true },
-  { day: 'Diumenge', time: '12h', text: 'Entrega de trofeus' },
-].map((item, index, arr) => ({
+  es: {
+    bgAlt: 'Corredores en la Media Maratón Delta del Ebre',
+    eyebrow: 'Entrega de dorsales',
+    heading: 'Horarios',
+    timeline: [
+      { day: 'Sábado', time: '10 - 20h', text: 'Entrega de dorsales', highlight: true },
+      { day: 'Sábado', time: '10 - 20h', text: 'Feria del corredor' },
+      {
+        day: 'Domingo',
+        time: '7 - 8:15h',
+        text: 'Recogida exprés de dorsales (solo para quien haya pagado el suplemento de 1€ en la inscripción)',
+      },
+      { day: 'Domingo', time: '9h', text: 'Salida Media Maratón', highlight: true },
+      { day: 'Domingo', time: '12h', text: 'Entrega de trofeos' },
+    ],
+  },
+};
+
+const t = content[lang];
+const timeline = t.timeline.map((item, index, arr) => ({
   ...item,
   isNewDay: index === 0 || arr[index - 1].day !== item.day,
   isDayEnd: index === arr.length - 1 || arr[index + 1].day !== item.day,
@@ -20,12 +53,12 @@ const timeline = [
 ---
 
 <section class="horaris" id="horaris">
-  <Image src={bgImage} alt="Corredors a la Mitja Marató Delta de l'Ebre" class="horaris-bg" loading="lazy" width={1920} />
+  <Image src={bgImage} alt={t.bgAlt} class="horaris-bg" loading="lazy" width={1920} />
   <div class="horaris-overlay"></div>
 
   <div class="horaris-content">
-    <span class="horaris-eyebrow">Entrega de dorsals</span>
-    <h2>Horaris</h2>
+    <span class="horaris-eyebrow">{t.eyebrow}</span>
+    <h2>{t.heading}</h2>
 
     <div class="steps">
       {

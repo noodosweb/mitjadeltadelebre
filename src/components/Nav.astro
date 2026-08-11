@@ -1,14 +1,52 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '../assets/images/logo_blanc.png';
+import { pageMap, type Locale } from '../i18n/page-map';
 
-const menuItems = [
-  { label: 'Informació', href: '#informacio' },
-  { label: 'Serveis', href: '#serveis' },
-  { label: 'Horaris', href: '#horaris' },
-  { label: 'Recorregut', href: '#recorregut' },
-  { label: 'Preu', href: '#preu' },
-];
+interface Props {
+  lang?: Locale;
+  currentSlug?: string;
+}
+
+const { lang = 'ca', currentSlug = 'home' } = Astro.props;
+
+const content = {
+  ca: {
+    menuItems: [
+      { label: 'Informació', href: '#informacio' },
+      { label: 'Serveis', href: '#serveis' },
+      { label: 'Horaris', href: '#horaris' },
+      { label: 'Recorregut', href: '#recorregut' },
+      { label: 'Preu', href: '#preu' },
+    ],
+    cta: 'Inscripcions',
+    openMenu: 'Obrir menú',
+    langLabel: 'CA',
+    langOptions: [
+      { code: 'ca' as Locale, label: 'Català' },
+      { code: 'es' as Locale, label: 'Castellano' },
+    ],
+  },
+  es: {
+    menuItems: [
+      { label: 'Información', href: '#informacio' },
+      { label: 'Servicios', href: '#serveis' },
+      { label: 'Horarios', href: '#horaris' },
+      { label: 'Recorrido', href: '#recorregut' },
+      { label: 'Precio', href: '#preu' },
+    ],
+    cta: 'Inscripciones',
+    openMenu: 'Abrir menú',
+    langLabel: 'ES',
+    langOptions: [
+      { code: 'ca' as Locale, label: 'Català' },
+      { code: 'es' as Locale, label: 'Castellano' },
+    ],
+  },
+};
+
+const t = content[lang];
+const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
 ---
 
 <header>
@@ -33,10 +71,11 @@ const menuItems = [
       </div>
 
       <details class="nav-lang">
-        <summary>CA</summary>
+        <summary>{t.langLabel}</summary>
         <ul>
-          <li><a href="#">Català</a></li>
-          <li><a href="#">Castellano</a></li>
+          {t.langOptions.map((opt) => (
+            <li><a href={langHref(opt.code)} hreflang={opt.code}>{opt.label}</a></li>
+          ))}
         </ul>
       </details>
     </div>
@@ -46,18 +85,18 @@ const menuItems = [
     <Image src={logo} alt="Mitja Marató Delta de l'Ebre" />
 
     <input type="checkbox" id="nav-toggle" class="nav-toggle-input" />
-    <label for="nav-toggle" class="nav-toggle-label" aria-label="Obrir menú">
+    <label for="nav-toggle" class="nav-toggle-label" aria-label={t.openMenu}>
       <span></span><span></span><span></span>
     </label>
 
     <div class="nav-menu-wrapper">
       <ul class="nav-menu">
-        {menuItems.map((item) => (
+        {t.menuItems.map((item) => (
           <li><a href={item.href}>{item.label}</a></li>
         ))}
       </ul>
 
-      <a class="nav-cta" href="https://www.rockthesport.com/es/evento/mitja-delta-del-ebre" target="_blank" rel="noopener noreferrer">Inscripcions</a>
+      <a class="nav-cta" href="https://www.rockthesport.com/es/evento/mitja-delta-del-ebre" target="_blank" rel="noopener noreferrer">{t.cta}</a>
     </div>
   </nav>
 </header>

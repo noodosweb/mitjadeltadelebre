@@ -10,66 +10,140 @@ import bossaIcon from '../assets/iconos/bossa.png';
 import premisIcon from '../assets/iconos/premis.png';
 import robaIcon from '../assets/iconos/roba.png';
 import postCursaIcon from '../assets/iconos/post-cursa.png';
+import type { Locale } from '../i18n/page-map';
 
-const services = [
-  {
-    title: 'Avituallaments',
-    description: "Punts d'avituallament distribuïts al llarg del recorregut per hidratar-te durant la cursa.",
-    image: avituallamentIcon,
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+  ca: {
+    eyebrow: 'Inscripció',
+    heading: 'Serveis',
+    lead: 'Què inclou la teva inscripció?',
+    services: [
+      {
+        title: 'Avituallaments',
+        description: "Punts d'avituallament distribuïts al llarg del recorregut per hidratar-te durant la cursa.",
+        image: avituallamentIcon,
+      },
+      {
+        title: 'Foto meta gratuïta',
+        description: "Descarrega't gratuïtament la teva foto oficial en creuar la línia de meta.",
+        image: fotoIcon,
+      },
+      {
+        title: 'Cronometratge',
+        description: 'Cronometratge oficial per xip amb el teu temps de cursa disponible a l’instant.',
+        image: cronoIcon,
+      },
+      {
+        title: 'Animació',
+        description: 'Música i animació al llarg del recorregut i a la zona de sortida i arribada.',
+        image: animacioIcon,
+      },
+      {
+        title: 'Dutxes',
+        description: 'Servei de dutxes disponible per als participants un cop finalitzada la cursa.',
+        image: dutxaIcon,
+      },
+      {
+        title: 'Servei mèdic',
+        description: 'Equip mèdic i d’assistència sanitària present durant tota la prova.',
+        image: ambulanciaIcon,
+      },
+      {
+        title: 'Bossa del corredor',
+        description: 'Bossa del corredor amb obsequis i tota la informació de la cursa.',
+        image: bossaIcon,
+      },
+      {
+        title: 'Servei guarda-roba',
+        description: 'Deixa les teves pertinences en un lloc segur mentre corres.',
+        image: robaIcon,
+      },
+      {
+        title: 'Premis',
+        description: 'Trofeus i premis per als primers classificats de cada categoria.',
+        image: premisIcon,
+      },
+      {
+        title: 'Servei post cursa',
+        description: 'Zona d’avituallament post cursa perquè recuperis forces després de l’esforç.',
+        image: postCursaIcon,
+      },
+    ],
   },
-  {
-    title: 'Foto meta gratuïta',
-    description: "Descarrega't gratuïtament la teva foto oficial en creuar la línia de meta.",
-    image: fotoIcon,
+  es: {
+    eyebrow: 'Inscripción',
+    heading: 'Servicios',
+    lead: '¿Qué incluye tu inscripción?',
+    services: [
+      {
+        title: 'Avituallamientos',
+        description: 'Puntos de avituallamiento distribuidos a lo largo del recorrido para hidratarte durante la carrera.',
+        image: avituallamentIcon,
+      },
+      {
+        title: 'Foto meta gratuita',
+        description: 'Descárgate gratuitamente tu foto oficial al cruzar la línea de meta.',
+        image: fotoIcon,
+      },
+      {
+        title: 'Cronometraje',
+        description: 'Cronometraje oficial por chip con tu tiempo de carrera disponible al instante.',
+        image: cronoIcon,
+      },
+      {
+        title: 'Animación',
+        description: 'Música y animación a lo largo del recorrido y en la zona de salida y llegada.',
+        image: animacioIcon,
+      },
+      {
+        title: 'Duchas',
+        description: 'Servicio de duchas disponible para los participantes una vez finalizada la carrera.',
+        image: dutxaIcon,
+      },
+      {
+        title: 'Servicio médico',
+        description: 'Equipo médico y de asistencia sanitaria presente durante toda la prueba.',
+        image: ambulanciaIcon,
+      },
+      {
+        title: 'Bolsa del corredor',
+        description: 'Bolsa del corredor con obsequios y toda la información de la carrera.',
+        image: bossaIcon,
+      },
+      {
+        title: 'Servicio guardarropa',
+        description: 'Deja tus pertenencias en un lugar seguro mientras corres.',
+        image: robaIcon,
+      },
+      {
+        title: 'Premios',
+        description: 'Trofeos y premios para los primeros clasificados de cada categoría.',
+        image: premisIcon,
+      },
+      {
+        title: 'Servicio post carrera',
+        description: 'Zona de avituallamiento post carrera para que recuperes fuerzas después del esfuerzo.',
+        image: postCursaIcon,
+      },
+    ],
   },
-  {
-    title: 'Cronometratge',
-    description: 'Cronometratge oficial per xip amb el teu temps de cursa disponible a l’instant.',
-    image: cronoIcon,
-  },
-  {
-    title: 'Animació',
-    description: 'Música i animació al llarg del recorregut i a la zona de sortida i arribada.',
-    image: animacioIcon,
-  },
-  {
-    title: 'Dutxes',
-    description: 'Servei de dutxes disponible per als participants un cop finalitzada la cursa.',
-    image: dutxaIcon,
-  },
-  {
-    title: 'Servei mèdic',
-    description: 'Equip mèdic i d’assistència sanitària present durant tota la prova.',
-    image: ambulanciaIcon,
-  },
-  {
-    title: 'Bossa del corredor',
-    description: 'Bossa del corredor amb obsequis i tota la informació de la cursa.',
-    image: bossaIcon,
-  },
-  {
-    title: 'Servei guarda-roba',
-    description: 'Deixa les teves pertinences en un lloc segur mentre corres.',
-    image: robaIcon,
-  },
-  {
-    title: 'Premis',
-    description: 'Trofeus i premis per als primers classificats de cada categoria.',
-    image: premisIcon,
-  },
-  {
-    title: 'Servei post cursa',
-    description: 'Zona d’avituallament post cursa perquè recuperis forces després de l’esforç.',
-    image: postCursaIcon,
-  },
-].map((service, index) => ({ ...service, number: String(index + 1).padStart(2, '0') }));
+};
+
+const t = content[lang];
+const services = t.services.map((service, index) => ({ ...service, number: String(index + 1).padStart(2, '0') }));
 ---
 
 <section class="services" id="serveis">
   <div class="services-inner">
-    <span class="services-eyebrow">Inscripció</span>
-    <h2>Serveis</h2>
-    <p class="services-lead">Què inclou la teva inscripció?</p>
+    <span class="services-eyebrow">{t.eyebrow}</span>
+    <h2>{t.heading}</h2>
+    <p class="services-lead">{t.lead}</p>
 
     <div class="services-grid">
       {

@@ -1,60 +1,108 @@
+---
+import { pageMap, type Locale } from '../i18n/page-map';
+
+interface Props {
+	lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+	ca: {
+		ariaLabel: 'Gestionar consentiment',
+		textBefore: "Utilitzem cookies pròpies per al funcionament del lloc web i, si ho consentiu, per mesurar-ne l'ús (Google Analytics). Més informació a la",
+		textLink: 'política de cookies',
+		categories: {
+			functional: { name: 'Funcional', alwaysOn: 'Sempre activa', desc: 'Necessària pel funcionament bàsic del lloc web. No es pot desactivar.' },
+			preferences: { name: 'Preferències', desc: "Recorda opcions no essencials triades per l'usuari." },
+			statistics: { name: 'Estadístiques', desc: "Ens permet mesurar l'ús anònim del lloc web (Google Analytics)." },
+			marketing: {
+				name: 'Màrqueting',
+				desc: "Actualment no fem servir cap cookie de màrqueting. Categoria preparada per si en el futur s'hi afegeix publicitat o remarketing.",
+			},
+		},
+		reject: 'Rebutjar-ho tot',
+		save: 'Desar preferències',
+		accept: 'Acceptar-ho tot',
+	},
+	es: {
+		ariaLabel: 'Gestionar consentimiento',
+		textBefore: 'Utilizamos cookies propias para el funcionamiento del sitio web y, si lo consientes, para medir su uso (Google Analytics). Más información en la',
+		textLink: 'política de cookies',
+		categories: {
+			functional: { name: 'Funcional', alwaysOn: 'Siempre activa', desc: 'Necesaria para el funcionamiento básico del sitio web. No se puede desactivar.' },
+			preferences: { name: 'Preferencias', desc: 'Recuerda opciones no esenciales elegidas por el usuario.' },
+			statistics: { name: 'Estadísticas', desc: 'Nos permite medir el uso anónimo del sitio web (Google Analytics).' },
+			marketing: {
+				name: 'Marketing',
+				desc: 'Actualmente no utilizamos ninguna cookie de marketing. Categoría preparada por si en el futuro se añade publicidad o remarketing.',
+			},
+		},
+		reject: 'Rechazar todo',
+		save: 'Guardar preferencias',
+		accept: 'Aceptar todo',
+	},
+};
+
+const t = content[lang];
+const cookiePolicyHref = pageMap.cookies[lang];
+---
+
 <div
 	id="cookie-banner"
 	class="cookie-banner"
 	role="dialog"
 	aria-modal="true"
-	aria-label="Gestionar consentiment"
+	aria-label={t.ariaLabel}
 	hidden
 	style="--cookie-font: var(--font-sans, system-ui, sans-serif); --cookie-surface: var(--color-navy-dark, #1a1a1a); --cookie-text: #fff; --cookie-accent: var(--color-accent-gold, #e8b84b); --cookie-accent-text: var(--color-navy-dark, #1a1a1a); --cookie-radius: 0.5rem; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; padding: 1rem; max-height: 100vh; overflow-y: auto; font-family: var(--cookie-font);"
 >
 	<div class="cookie-banner__inner">
 		<p class="cookie-banner__text">
-			Utilitzem cookies pròpies per al funcionament del lloc web i, si ho consentiu, per
-			mesurar-ne l'ús (Google Analytics). Més informació a la
-			<a href="/politica-cookies">política de cookies</a>.
+			{t.textBefore}{' '}
+			<a href={cookiePolicyHref}>{t.textLink}</a>.
 		</p>
 
 		<div class="cookie-banner__categories">
 			<div class="cookie-category">
 				<div class="cookie-category__header">
-					<span>Funcional</span>
-					<span class="cookie-category__always-on">Sempre activa</span>
+					<span>{t.categories.functional.name}</span>
+					<span class="cookie-category__always-on">{t.categories.functional.alwaysOn}</span>
 				</div>
-				<p class="cookie-category__desc">Necessària pel funcionament bàsic del lloc web. No es pot desactivar.</p>
+				<p class="cookie-category__desc">{t.categories.functional.desc}</p>
 			</div>
 
 			<div class="cookie-category">
 				<label class="cookie-category__header">
-					<span>Preferències</span>
+					<span>{t.categories.preferences.name}</span>
 					<input type="checkbox" id="cookie-cat-preferences" />
 				</label>
-				<p class="cookie-category__desc">Recorda opcions no essencials triades per l'usuari.</p>
+				<p class="cookie-category__desc">{t.categories.preferences.desc}</p>
 			</div>
 
 			<div class="cookie-category">
 				<label class="cookie-category__header">
-					<span>Estadístiques</span>
+					<span>{t.categories.statistics.name}</span>
 					<input type="checkbox" id="cookie-cat-statistics" />
 				</label>
-				<p class="cookie-category__desc">Ens permet mesurar l'ús anònim del lloc web (Google Analytics).</p>
+				<p class="cookie-category__desc">{t.categories.statistics.desc}</p>
 			</div>
 
 			<div class="cookie-category">
 				<label class="cookie-category__header">
-					<span>Màrqueting</span>
+					<span>{t.categories.marketing.name}</span>
 					<input type="checkbox" id="cookie-cat-marketing" />
 				</label>
 				<p class="cookie-category__desc">
-					Actualment no fem servir cap cookie de màrqueting. Categoria preparada per si en el
-					futur s'hi afegeix publicitat o remarketing.
+					{t.categories.marketing.desc}
 				</p>
 			</div>
 		</div>
 
 		<div class="cookie-banner__actions">
-			<button type="button" id="cookie-reject" class="cookie-btn cookie-btn--secondary">Rebutjar-ho tot</button>
-			<button type="button" id="cookie-save" class="cookie-btn cookie-btn--secondary">Desar preferències</button>
-			<button type="button" id="cookie-accept" class="cookie-btn cookie-btn--primary">Acceptar-ho tot</button>
+			<button type="button" id="cookie-reject" class="cookie-btn cookie-btn--secondary">{t.reject}</button>
+			<button type="button" id="cookie-save" class="cookie-btn cookie-btn--secondary">{t.save}</button>
+			<button type="button" id="cookie-accept" class="cookie-btn cookie-btn--primary">{t.accept}</button>
 		</div>
 	</div>
 </div>

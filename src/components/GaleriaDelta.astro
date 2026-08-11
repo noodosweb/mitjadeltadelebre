@@ -6,6 +6,20 @@ import p3 from '../assets/images/delta/_DSC5466.jpg';
 import p4 from '../assets/images/delta/delta1.png';
 import p5 from '../assets/images/delta/_DSC5536.jpg';
 import p6 from '../assets/images/delta/delta2.jpg';
+import type { Locale } from '../i18n/page-map';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+  ca: { alt: (i: number) => `Foto ${i + 1} del Delta de l'Ebre`, close: 'Tanca la imatge', closeShort: 'Tanca' },
+  es: { alt: (i: number) => `Foto ${i + 1} del Delta del Ebre`, close: 'Cerrar la imagen', closeShort: 'Cerrar' },
+};
+
+const t = content[lang];
 
 const photos = [{ src: p1 }, { src: p2 }, { src: p3 }, { src: p4 }, { src: p5 }, { src: p6 }];
 ---
@@ -17,7 +31,7 @@ const photos = [{ src: p1 }, { src: p2 }, { src: p3 }, { src: p4 }, { src: p5 },
         <a href={`#delta-foto-${i}`} class="gallery-thumb">
           <Image
             src={photo.src}
-            alt={`Foto ${i + 1} del Delta de l'Ebre`}
+            alt={t.alt(i)}
             width={500}
             class="gallery-thumb-img"
             style={`object-position: ${photo.focus ?? 'center'};`}
@@ -30,10 +44,10 @@ const photos = [{ src: p1 }, { src: p2 }, { src: p3 }, { src: p4 }, { src: p5 },
   {
     photos.map((photo, i) => (
       <div class="lightbox" id={`delta-foto-${i}`}>
-        <a href="#" class="lightbox-backdrop" aria-label="Tanca la imatge" />
+        <a href="#" class="lightbox-backdrop" aria-label={t.close} />
         <div class="lightbox-inner">
-          <Image src={photo.src} alt={`Foto ${i + 1} del Delta de l'Ebre`} width={1400} class="lightbox-img" />
-          <a href="#" class="lightbox-close" aria-label="Tanca">
+          <Image src={photo.src} alt={t.alt(i)} width={1400} class="lightbox-img" />
+          <a href="#" class="lightbox-close" aria-label={t.closeShort}>
             &times;
           </a>
         </div>

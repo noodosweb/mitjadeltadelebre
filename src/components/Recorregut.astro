@@ -1,48 +1,85 @@
 ---
+import type { Locale } from '../i18n/page-map';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
 const wikilocEmbedSrc =
   'https://ca.wikiloc.com/wikiloc/embedv2.do?id=276745362&elevation=on&images=on&maptype=H';
+const wikilocLink = 'https://ca.wikiloc.com/rutes-correr/mitja-marato-delta-de-lebre-2-276745362';
 
-const highlights = [
-  { label: 'Sortida', km: 0 },
-  { label: 'Observatori de la Tancada', km: 4.7 },
-  { label: 'Mirador de la Tancada', km: 6.8 },
-  { label: 'Platja dels Eucaliptus', km: 9.5 },
-  { label: 'Mirador de la Tancada', km: 13.7 },
-  { label: "Mirador de l'Embut", km: 18.1 },
-  { label: 'Mirador del Través', km: 20.1 },
-  { label: 'Arribada', km: 21.097 },
-];
+const content = {
+  ca: {
+    heading: 'El recorregut',
+    lead: "21,097 km travessant alguns dels paisatges més emblemàtics del Delta de l'Ebre: arrossars i miradors naturals. Un recorregut circular amb sortida i arribada al mateix punt.",
+    facts: [
+      { value: '21,097 km', label: 'Distància' },
+      { value: 'Mixt', label: 'Paviment' },
+      { value: 'Poble Nou del Delta', label: 'Sortida i arribada' },
+    ],
+    highlights: [
+      { label: 'Sortida', km: 0 },
+      { label: 'Observatori de la Tancada', km: 4.7 },
+      { label: 'Mirador de la Tancada', km: 6.8 },
+      { label: 'Platja dels Eucaliptus', km: 9.5 },
+      { label: 'Mirador de la Tancada', km: 13.7 },
+      { label: "Mirador de l'Embut", km: 18.1 },
+      { label: 'Mirador del Través', km: 20.1 },
+      { label: 'Arribada', km: 21.097 },
+    ],
+    mapTitle: "Mapa del recorregut - Mitja Delta de l'Ebre (Wikiloc)",
+    mapCredit: 'Mapa del recorregut via',
+  },
+  es: {
+    heading: 'El recorrido',
+    lead: 'Recorrido circular de 21,097 km que atraviesa algunos de los paisajes más emblemáticos del Delta del Ebre: arrozales y miradores naturales, con salida y llegada en el mismo punto.',
+    facts: [
+      { value: '21,097 km', label: 'Distancia' },
+      { value: 'Mixto', label: 'Pavimento' },
+      { value: 'Poble Nou del Delta', label: 'Salida y llegada' },
+    ],
+    highlights: [
+      { label: 'Salida', km: 0 },
+      { label: 'Observatorio de la Tancada', km: 4.7 },
+      { label: 'Mirador de la Tancada', km: 6.8 },
+      { label: 'Playa de los Eucaliptus', km: 9.5 },
+      { label: 'Mirador de la Tancada', km: 13.7 },
+      { label: 'Mirador del Embut', km: 18.1 },
+      { label: 'Mirador del Través', km: 20.1 },
+      { label: 'Llegada', km: 21.097 },
+    ],
+    mapTitle: 'Mapa del recorrido - Media Maratón Delta del Ebre (Wikiloc)',
+    mapCredit: 'Mapa del recorrido vía',
+  },
+};
+
+const t = content[lang];
 ---
 
 <section class="route" id="recorregut">
   <div class="route-inner">
     <div class="route-layout">
       <div class="route-content">
-        <h2>El recorregut</h2>
-        <p class="route-lead">
-          21,097 km travessant alguns dels paisatges més emblemàtics del Delta
-          de l'Ebre: arrossars i miradors naturals. Un recorregut circular
-          amb sortida i arribada al mateix punt.
-        </p>
+        <h2>{t.heading}</h2>
+        <p class="route-lead">{t.lead}</p>
 
         <div class="route-facts">
-          <div class="route-fact">
-            <span class="route-fact-value">21,097 km</span>
-            <span class="route-fact-label">Distància</span>
-          </div>
-          <div class="route-fact">
-            <span class="route-fact-value">Mixt</span>
-            <span class="route-fact-label">Paviment</span>
-          </div>
-          <div class="route-fact">
-            <span class="route-fact-value">Poble Nou del Delta</span>
-            <span class="route-fact-label">Sortida i arribada</span>
-          </div>
+          {
+            t.facts.map((fact) => (
+              <div class="route-fact">
+                <span class="route-fact-value">{fact.value}</span>
+                <span class="route-fact-label">{fact.label}</span>
+              </div>
+            ))
+          }
         </div>
 
         <ul class="route-highlights-list">
           {
-            highlights.map((point) => (
+            t.highlights.map((point) => (
               <li>
                 <span class="route-highlights-km">{point.km} km</span>
                 <span class="route-highlights-label">{point.label}</span>
@@ -55,14 +92,14 @@ const highlights = [
       <div class="route-map-wrapper">
         <div class="route-map">
           <iframe
-            title="Mapa del recorregut - Mitja Delta de l'Ebre (Wikiloc)"
+            title={t.mapTitle}
             src={wikilocEmbedSrc}
             scrolling="no"
             loading="lazy"
           ></iframe>
         </div>
         <p class="route-map-credit">
-          Mapa del recorregut via <a href="https://ca.wikiloc.com/rutes-correr/mitja-marato-delta-de-lebre-2-276745362" target="_blank" rel="noopener noreferrer">Wikiloc</a>
+          {t.mapCredit} <a href={wikilocLink} target="_blank" rel="noopener noreferrer">Wikiloc</a>
         </p>
       </div>
     </div>

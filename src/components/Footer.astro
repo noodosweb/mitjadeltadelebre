@@ -1,24 +1,22 @@
 ---
 import { Image } from 'astro:assets';
+import { pageMap, type Locale } from '../i18n/page-map';
 
 import logoCarrilet from '../assets/images/logos-collaboradors/COL·LABORADOR PRINCIPAL I CLUB/logo_carrilet_white.png';
 import logoAjuntament from '../assets/images/logos-collaboradors/INSTITUCIONS/ajuntament_white.png';
 import logoParcNatural from '../assets/images/logos-collaboradors/INSTITUCIONS/parc_natural_white.png';
 import logoBiosfera from '../assets/images/logos-collaboradors/INSTITUCIONS/logo_biosfera_white.png';
 
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
 const institucionals = [
   { src: logoAjuntament, alt: "Ajuntament d'Amposta" },
   { src: logoParcNatural, alt: "Parc Natural del Delta de l'Ebre" },
   { src: logoBiosfera, alt: "Reserva de la Biosfera Terres de l'Ebre" },
-];
-
-const menuItems = [
-  { label: 'Informació', href: '#informacio' },
-  { label: 'Serveis', href: '#serveis' },
-  { label: 'Horaris', href: '#horaris' },
-  { label: 'Recorregut', href: '#recorregut' },
-  { label: 'Preu', href: '#preu' },
-  { label: 'Col·laboradors', href: '#collaboradors' },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -27,25 +25,62 @@ const contacte = {
   email: 'mitjadeltadelebre@gmail.com',
 };
 
-const legalLinks = [
-  { label: 'Avís legal', href: '#' },
-  { label: 'Política de privacitat', href: '#' },
-  { label: 'Política de cookies', href: '/politica-cookies' },
-];
+const content = {
+  ca: {
+    organitza: 'Organitza',
+    collaboren: 'Col·laboren',
+    menuItems: [
+      { label: 'Informació', href: '#informacio' },
+      { label: 'Serveis', href: '#serveis' },
+      { label: 'Horaris', href: '#horaris' },
+      { label: 'Recorregut', href: '#recorregut' },
+      { label: 'Preu', href: '#preu' },
+      { label: 'Col·laboradors', href: '#collaboradors' },
+    ],
+    legalLinks: [
+      { label: 'Avís legal', href: '#' },
+      { label: 'Política de privacitat', href: '#' },
+      { label: 'Política de cookies', href: pageMap.cookies.ca },
+    ],
+    cookieSettings: 'Configuració de cookies',
+    rights: (year: number) => `© ${year} Mitja Marató Delta de l'Ebre - Grup Oliva Motor. Tots els drets reservats.`,
+  },
+  es: {
+    organitza: 'Organiza',
+    collaboren: 'Colaboran',
+    menuItems: [
+      { label: 'Información', href: '#informacio' },
+      { label: 'Servicios', href: '#serveis' },
+      { label: 'Horarios', href: '#horaris' },
+      { label: 'Recorrido', href: '#recorregut' },
+      { label: 'Precio', href: '#preu' },
+      { label: 'Colaboradores', href: '#collaboradors' },
+    ],
+    legalLinks: [
+      { label: 'Aviso legal', href: '#' },
+      { label: 'Política de privacidad', href: '#' },
+      { label: 'Política de cookies', href: pageMap.cookies.es },
+    ],
+    cookieSettings: 'Configuración de cookies',
+    rights: (year: number) => `© ${year} Media Maratón Delta del Ebre - Grup Oliva Motor. Todos los derechos reservados.`,
+  },
+};
+
+const t = content[lang];
 ---
 
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brands">
       <div class="footer-organitza">
-        <span class="footer-label">Organitza</span>
+        <span class="footer-label">{t.organitza}</span>
         <Image src={logoCarrilet} alt="Club Esportiu Lo Carrilet Tortosa" width={140} class="footer-organitza-logo" />
       </div>
 
       <div class="footer-divider" />
 
       <div class="footer-institucionals">
-        <span class="footer-label">Col·laboren</span>
+        <span class="footer-label">{t.collaboren}</span>
         <div class="footer-institucionals-logos">
           {
             institucionals.map((logo) => (
@@ -58,7 +93,7 @@ const legalLinks = [
 
     <div class="footer-row">
       <ul class="footer-menu">
-        {menuItems.map((item) => (
+        {t.menuItems.map((item) => (
           <li><a href={item.href}>{item.label}</a></li>
         ))}
       </ul>
@@ -87,12 +122,12 @@ const legalLinks = [
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; {currentYear} Mitja Marató Delta de l'Ebre - Grup Oliva Motor. Tots els drets reservats.</p>
+      <p>{t.rights(currentYear)}</p>
       <ul class="footer-legal">
-        {legalLinks.map((link) => (
+        {t.legalLinks.map((link) => (
           <li><a href={link.href}>{link.label}</a></li>
         ))}
-        <li><button type="button" id="reopen-cookie-settings" class="footer-legal-button">Configuració de cookies</button></li>
+        <li><button type="button" id="reopen-cookie-settings" class="footer-legal-button">{t.cookieSettings}</button></li>
       </ul>
     </div>
   </div>

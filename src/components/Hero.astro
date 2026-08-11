@@ -2,17 +2,41 @@
 import { Image } from 'astro:assets';
 import heroImage from '../assets/images/portada.jpg';
 import logo from '../assets/images/logo_blanc.png';
+import type { Locale } from '../i18n/page-map';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+  ca: {
+    alt: "Mitja Marató Delta de l'Ebre",
+    title: "Mitja Marató Delta de l'Ebre - Grup Oliva Motor",
+    info: "Obertura d'inscripcions: 8/08/2026",
+    cta: 'Inscripcions',
+  },
+  es: {
+    alt: 'Media Maratón Delta del Ebre',
+    title: 'Media Maratón Delta del Ebre - Grup Oliva Motor',
+    info: 'Apertura de inscripciones: 8/08/2026',
+    cta: 'Inscripciones',
+  },
+};
+
+const t = content[lang];
 ---
 
 <section class="hero">
-  <Image src={heroImage} alt="Mitja Marató Delta de l'Ebre" class="hero-bg" loading="eager" fetchpriority="high" />
+  <Image src={heroImage} alt={t.alt} class="hero-bg" loading="eager" fetchpriority="high" />
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <Image src={logo} alt="Mitja Marató Delta de l'Ebre" class="hero-logo" loading="eager" />
+    <Image src={logo} alt={t.alt} class="hero-logo" loading="eager" />
     <p class="hero-date">18.04.2027</p>
-    <h1 class="hero-title">Mitja Marató Delta de l'Ebre - Grup Oliva Motor</h1>
-    <p class="hero-info">Obertura d'inscripcions: 8/08/2026</p>
-    <a class="hero-cta" href="https://www.rockthesport.com/es/evento/mitja-delta-del-ebre" target="_blank" rel="noopener noreferrer">Inscripcions</a>
+    <h1 class="hero-title">{t.title}</h1>
+    <p class="hero-info">{t.info}</p>
+    <a class="hero-cta" href="https://www.rockthesport.com/es/evento/mitja-delta-del-ebre" target="_blank" rel="noopener noreferrer">{t.cta}</a>
   </div>
 </section>
 

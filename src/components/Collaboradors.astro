@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import type { Locale } from '../i18n/page-map';
 
 import logoOlivaMotor from '../assets/images/logos-collaboradors/COL·LABORADOR PRINCIPAL I CLUB/oliva_motor_cropped.png';
 import logoClinicaDental from '../assets/images/logos-collaboradors/COL·LABORADOR PRINCIPAL I CLUB/clinicaDental.jpeg';
@@ -32,15 +33,38 @@ const mesPatrocinadors = [
   { src: logoLluis, alt: 'Lluís' },
   { src: logoPerfils, alt: 'Perfils Estilistes' },
 ];
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+  ca: {
+    eyebrow: 'Gràcies pel seu suport',
+    heading: 'Col·laboradors',
+    principalsLabel: 'Patrocinadors principals',
+    mesLabel: 'Més patrocinadors',
+  },
+  es: {
+    eyebrow: 'Gracias por su apoyo',
+    heading: 'Colaboradores',
+    principalsLabel: 'Patrocinadores principales',
+    mesLabel: 'Más patrocinadores',
+  },
+};
+
+const t = content[lang];
 ---
 
 <section class="collab" id="collaboradors">
   <div class="collab-inner">
-    <span class="collab-eyebrow">Gràcies pel seu suport</span>
-    <h2>Col·laboradors</h2>
+    <span class="collab-eyebrow">{t.eyebrow}</span>
+    <h2>{t.heading}</h2>
 
     <div class="collab-tier">
-      <p class="collab-tier-label">Patrocinadors principals</p>
+      <p class="collab-tier-label">{t.principalsLabel}</p>
       <div class="collab-grid collab-grid--principal">
         {
           principals.map((logo) => (
@@ -53,7 +77,7 @@ const mesPatrocinadors = [
     </div>
 
     <div class="collab-tier">
-      <p class="collab-tier-label">Més patrocinadors</p>
+      <p class="collab-tier-label">{t.mesLabel}</p>
       <div class="collab-grid-6">
         {
           mesPatrocinadors.map((logo) => (

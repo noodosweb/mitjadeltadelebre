@@ -3,9 +3,10 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsentBanner from '../components/CookieConsentBanner.astro';
+import { pageMap } from '../i18n/page-map';
 
 const siteUrl = 'https://mitjadeltadelebre.com';
-const canonicalUrl = `${siteUrl}/politica-cookies`;
+const canonicalUrl = `${siteUrl}${pageMap.cookies.ca}`;
 const title = "Política de cookies — Mitja Marató Delta de l'Ebre";
 const description =
 	"Quines cookies utilitza mitjadeltadelebre.com, per a què serveixen i com pots gestionar-ne el consentiment per categories.";
@@ -18,6 +19,9 @@ const description =
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="ca" href={`${siteUrl}${pageMap.cookies.ca}`} />
+		<link rel="alternate" hreflang="es" href={`${siteUrl}${pageMap.cookies.es}`} />
+		<link rel="alternate" hreflang="x-default" href={`${siteUrl}${pageMap.cookies.ca}`} />
 
 		<script>
 			import { initAnalytics } from '../lib/analytics';
@@ -27,7 +31,7 @@ const description =
 		</script>
 	</head>
 	<body>
-		<Nav />
+		<Nav lang="ca" currentSlug="cookies" />
 		<main class="legal-page">
 			<h1>Política de cookies</h1>
 
@@ -83,8 +87,8 @@ const description =
 				peu de qualsevol pàgina.
 			</p>
 		</main>
-		<Footer />
-		<CookieConsentBanner />
+		<Footer lang="ca" />
+		<CookieConsentBanner lang="ca" />
 	</body>
 </html>
 

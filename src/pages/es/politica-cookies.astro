@@ -1,0 +1,128 @@
+---
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsentBanner from '../../components/CookieConsentBanner.astro';
+import { pageMap } from '../../i18n/page-map';
+
+const siteUrl = 'https://mitjadeltadelebre.com';
+const canonicalUrl = `${siteUrl}${pageMap.cookies.es}`;
+const title = 'Política de cookies — Media Maratón Delta del Ebre';
+const description =
+	'Qué cookies utiliza mitjadeltadelebre.com, para qué sirven y cómo puedes gestionar tu consentimiento por categorías.';
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="ca" href={`${siteUrl}${pageMap.cookies.ca}`} />
+		<link rel="alternate" hreflang="es" href={`${siteUrl}${pageMap.cookies.es}`} />
+		<link rel="alternate" hreflang="x-default" href={`${siteUrl}${pageMap.cookies.ca}`} />
+
+		<script>
+			import { initAnalytics } from '../../lib/analytics';
+			import { initConsent } from '../../lib/consent';
+			initAnalytics();
+			initConsent();
+		</script>
+	</head>
+	<body>
+		<Nav lang="es" currentSlug="cookies" />
+		<main class="legal-page">
+			<h1>Política de cookies</h1>
+
+			<p>
+				Esta página explica qué cookies utiliza <strong>mitjadeltadelebre.com</strong> y para qué
+				sirve cada una. Puedes cambiar tu elección en cualquier momento desde el botón
+				<strong>«Configuración de cookies»</strong> en el pie de página.
+			</p>
+
+			<h2>Qué es una cookie</h2>
+			<p>
+				Una cookie es un pequeño archivo que el navegador guarda en tu dispositivo cuando visitas
+				un sitio web. Sirve para recordar información entre visitas o durante la misma sesión.
+			</p>
+
+			<h2>Categorías de cookies</h2>
+
+			<h3>Funcional (siempre activa)</h3>
+			<p>
+				Cookies técnicas necesarias para que el sitio funcione correctamente (por ejemplo, recordar
+				tu elección de consentimiento). No se pueden desactivar porque el sitio no funcionaría sin
+				ellas.
+			</p>
+
+			<h3>Preferencias</h3>
+			<p>
+				Permitirían recordar opciones de tu visita (como el idioma elegido). Actualmente no se
+				utiliza ninguna cookie de esta categoría aparte del almacenamiento de tu propia elección de
+				consentimiento.
+			</p>
+
+			<h3>Estadísticas</h3>
+			<p>
+				Utilizamos <strong>Google Analytics 4</strong> para entender, de forma anónima y agregada,
+				cómo se usa el sitio web (páginas visitadas, tiempo de visita...). Estas cookies solo se
+				activan si las aceptas. Puedes consultar la política de privacidad de Google en
+				<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+					policies.google.com/privacy</a>.
+			</p>
+
+			<h3>Marketing</h3>
+			<p>
+				Actualmente <strong>no</strong> utilizamos ninguna cookie de marketing ni publicidad.
+				Mantenemos la categoría preparada en el selector de consentimiento por si en el futuro se
+				añade publicidad o remarketing; en ese caso se actualizará esta página.
+			</p>
+
+			<h2>Cómo gestionar tu consentimiento</h2>
+			<p>
+				En tu primera visita te mostramos un aviso donde puedes aceptar todas las cookies,
+				rechazarlas o personalizar qué categorías aceptas. Puedes volver a abrir este selector
+				siempre que quieras desde el botón <strong>«Configuración de cookies»</strong> en el pie de
+				cualquier página.
+			</p>
+		</main>
+		<Footer lang="es" />
+		<CookieConsentBanner lang="es" />
+	</body>
+</html>
+
+<style>
+	.legal-page {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 3rem 1.5rem 5rem;
+	}
+
+	.legal-page h1 {
+		font-size: 2.2rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.legal-page h2 {
+		font-size: 1.3rem;
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.legal-page h3 {
+		font-size: 1.05rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.legal-page p {
+		line-height: 1.6;
+		color: var(--color-navy);
+	}
+
+	.legal-page a {
+		color: var(--color-navy);
+		text-decoration: underline;
+	}
+</style>

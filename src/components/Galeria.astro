@@ -6,6 +6,20 @@ import p3 from '../assets/images/fotos fotograf delta/_DSC5288.jpg';
 import p4 from '../assets/images/fotos fotograf delta/_DSC5453.jpg';
 import p5 from '../assets/images/fotos fotograf delta/_DSC5372.jpg';
 import p6 from '../assets/images/fotos fotograf delta/_DSC5262.jpg';
+import type { Locale } from '../i18n/page-map';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'ca' } = Astro.props;
+
+const content = {
+  ca: { alt: (i: number) => `Foto ${i + 1} de la cursa`, close: 'Tanca la imatge', closeShort: 'Tanca' },
+  es: { alt: (i: number) => `Foto ${i + 1} de la carrera`, close: 'Cerrar la imagen', closeShort: 'Cerrar' },
+};
+
+const t = content[lang];
 
 const photos = [
   { src: p1 },
@@ -24,7 +38,7 @@ const photos = [
         <a href={`#foto-${i}`} class="gallery-thumb">
           <Image
             src={photo.src}
-            alt={`Foto ${i + 1} de la cursa`}
+            alt={t.alt(i)}
             width={500}
             class="gallery-thumb-img"
             style={`object-position: ${photo.focus ?? 'center'};`}
@@ -37,10 +51,10 @@ const photos = [
   {
     photos.map((photo, i) => (
       <div class="lightbox" id={`foto-${i}`}>
-        <a href="#" class="lightbox-backdrop" aria-label="Tanca la imatge" />
+        <a href="#" class="lightbox-backdrop" aria-label={t.close} />
         <div class="lightbox-inner">
-          <Image src={photo.src} alt={`Foto ${i + 1} de la cursa`} width={1400} class="lightbox-img" />
-          <a href="#" class="lightbox-close" aria-label="Tanca">
+          <Image src={photo.src} alt={t.alt(i)} width={1400} class="lightbox-img" />
+          <a href="#" class="lightbox-close" aria-label={t.closeShort}>
             &times;
           </a>
         </div>

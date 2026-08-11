@@ -1,43 +1,43 @@
 ---
 import { getImage } from 'astro:assets';
-import '../styles/global.css';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import InfoGeneral from '../components/InfoGeneral.astro';
-import Serveis from '../components/Serveis.astro';
-import Horaris from '../components/Horaris.astro';
-import Recorregut from '../components/Recorregut.astro';
-import Galeria from '../components/Galeria.astro';
-import Preu from '../components/Preu.astro';
-import GaleriaDelta from '../components/GaleriaDelta.astro';
-import Collaboradors from '../components/Collaboradors.astro';
-import Footer from '../components/Footer.astro';
-import CookieConsentBanner from '../components/CookieConsentBanner.astro';
-import heroImage from '../assets/images/portada.jpg';
-import { pageMap } from '../i18n/page-map';
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+import Hero from '../../components/Hero.astro';
+import InfoGeneral from '../../components/InfoGeneral.astro';
+import Serveis from '../../components/Serveis.astro';
+import Horaris from '../../components/Horaris.astro';
+import Recorregut from '../../components/Recorregut.astro';
+import Galeria from '../../components/Galeria.astro';
+import Preu from '../../components/Preu.astro';
+import GaleriaDelta from '../../components/GaleriaDelta.astro';
+import Collaboradors from '../../components/Collaboradors.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsentBanner from '../../components/CookieConsentBanner.astro';
+import heroImage from '../../assets/images/portada.jpg';
+import { pageMap } from '../../i18n/page-map';
 
 const siteUrl = 'https://mitjadeltadelebre.com';
-const canonicalUrl = `${siteUrl}/`;
-const title = "Mitja Marató Delta de l'Ebre — 1a edició, 18 abril 2027";
+const canonicalUrl = `${siteUrl}${pageMap.home.es}`;
+const title = 'Media Maratón Delta del Ebre — 1ª edición, 18 abril 2027';
 const description =
-	"La 1a Mitja Marató Delta de l'Ebre: 21,097 km pel Parc Natural, la primera mitja marató d'asfalt de Catalunya en un espai natural protegit. 18 d'abril de 2027.";
+	'La 1ª Media Maratón Delta del Ebre: 21,097 km por el Parque Natural, la primera media maratón de asfalto de Cataluña en un espacio natural protegido. 18 de abril de 2027.';
 const ogImage = await getImage({ src: heroImage, width: 1200, height: 630 });
 const ogImageUrl = `${siteUrl}${ogImage.src}`;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'SportsEvent',
-	name: "Mitja Marató Delta de l'Ebre",
+	name: 'Media Maratón Delta del Ebre',
 	description,
 	startDate: '2027-04-18',
 	url: canonicalUrl,
 	image: ogImageUrl,
 	location: {
 		'@type': 'Place',
-		name: "Parc Natural del Delta de l'Ebre",
+		name: 'Parque Natural del Delta del Ebre',
 		address: {
 			'@type': 'PostalAddress',
-			addressRegion: 'Catalunya',
+			addressRegion: 'Cataluña',
 			addressCountry: 'ES',
 		},
 	},
@@ -48,7 +48,7 @@ const jsonLd = {
 };
 ---
 
-<html lang="ca">
+<html lang="es">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,7 +63,7 @@ const jsonLd = {
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content="Mitja Marató Delta de l'Ebre" />
+		<meta property="og:site_name" content="Media Maratón Delta del Ebre" />
 		<meta property="og:image" content={ogImageUrl} />
 
 		<meta name="twitter:card" content="summary_large_image" />
@@ -75,8 +75,8 @@ const jsonLd = {
 
 		<!-- GA4 amb Consent Mode v2 (denied per defecte fins que CookieConsentBanner ho actualitzi) -->
 		<script>
-			import { initAnalytics } from '../lib/analytics';
-			import { initConsent } from '../lib/consent';
+			import { initAnalytics } from '../../lib/analytics';
+			import { initConsent } from '../../lib/consent';
 			// initAnalytics() sempre abans: crea el núcleo (bootstrap + consent default) si no existeix.
 			// initConsent() només restaura l'estat de categories ja decidit, mai crea un altre bootstrap.
 			initAnalytics();
@@ -84,17 +84,17 @@ const jsonLd = {
 		</script>
 	</head>
 	<body>
-		<Nav lang="ca" currentSlug="home" />
-		<Hero lang="ca" />
-		<Galeria lang="ca" />
-		<InfoGeneral lang="ca" />
-		<Serveis lang="ca" />
-		<Horaris lang="ca" />
-		<Recorregut lang="ca" />
-		<Preu lang="ca" />
-		<GaleriaDelta lang="ca" />
-		<Collaboradors lang="ca" />
-		<Footer lang="ca" />
-		<CookieConsentBanner lang="ca" />
+		<Nav lang="es" currentSlug="home" />
+		<Hero lang="es" />
+		<Galeria lang="es" />
+		<InfoGeneral lang="es" />
+		<Serveis lang="es" />
+		<Horaris lang="es" />
+		<Recorregut lang="es" />
+		<Preu lang="es" />
+		<GaleriaDelta lang="es" />
+		<Collaboradors lang="es" />
+		<Footer lang="es" />
+		<CookieConsentBanner lang="es" />
 	</body>
 </html>
