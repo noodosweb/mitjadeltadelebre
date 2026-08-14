@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import logo from '../assets/images/logo_blanc.png';
+import logo from '../assets/images/mitja_delta_logo_blanco.png';
+import logoPlp from '../assets/images/Logo - Grup PLP Dental.png';
+import logoOliva from '../assets/images/grup_oliva_motor_logo_blanc.png';
 import { pageMap, type Locale } from '../i18n/page-map';
 
 interface Props {
@@ -84,9 +86,15 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
   </div>
 
   <nav>
-    <a href={pageMap.home[lang]} aria-label={t.homeAria} class="nav-logo-link">
-      <Image src={logo} alt="Mitja Marató Delta de l'Ebre" />
-    </a>
+    <div class="nav-logos">
+      <a href={pageMap.home[lang]} aria-label={t.homeAria} class="nav-logo-link">
+        <Image src={logo} alt="Mitja Marató Delta de l'Ebre" />
+      </a>
+      <span class="nav-logo-divider" aria-hidden="true"></span>
+      <Image src={logoPlp} alt="Grup PLP Dental" class="nav-logo-plp" />
+      <span class="nav-logo-divider" aria-hidden="true"></span>
+      <Image src={logoOliva} alt="Grup Oliva Motor" class="nav-logo-oliva" />
+    </div>
 
     <input type="checkbox" id="nav-toggle" class="nav-toggle-input" />
     <label for="nav-toggle" class="nav-toggle-label" aria-label={t.openMenu}>
@@ -140,6 +148,13 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
     padding: 0.5rem 1.5rem;
   }
 
+  .nav-logos {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
   .nav-logo-link {
     display: flex;
     flex-shrink: 0;
@@ -147,6 +162,20 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
 
   .nav-logo-link img {
     height: 56px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .nav-logo-divider {
+    width: 1px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+  }
+
+  .nav-logo-plp,
+  .nav-logo-oliva {
+    height: 44px;
     width: auto;
     flex-shrink: 0;
   }
@@ -315,6 +344,15 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
 
     .nav-logo-link img {
       height: 44px;
+    }
+
+    .nav-logo-divider {
+      height: 32px;
+    }
+
+    .nav-logo-plp,
+    .nav-logo-oliva {
+      height: 34px;
     }
 
     .nav-toggle-label {
