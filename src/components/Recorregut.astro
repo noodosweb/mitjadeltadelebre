@@ -8,15 +8,15 @@ interface Props {
 const { lang = 'ca' } = Astro.props;
 
 const wikilocEmbedSrc =
-  'https://ca.wikiloc.com/wikiloc/embedv2.do?id=276745362&elevation=on&images=on&maptype=H';
-const wikilocLink = 'https://ca.wikiloc.com/rutes-correr/mitja-marato-delta-de-lebre-2-276745362';
+  'https://ca.wikiloc.com/wikiloc/embedv2.do?id=278050083&elevation=on&images=on&maptype=H';
+const wikilocLink = 'https://loc.wiki/t/278050083?wa=sc';
 
 const content = {
   ca: {
     heading: 'El recorregut',
-    lead: "21,097 km travessant alguns dels paisatges més emblemàtics del Delta de l'Ebre: arrossars i miradors naturals. Un recorregut circular amb sortida i arribada al mateix punt.",
+    lead: "21,1 km travessant alguns dels paisatges més emblemàtics del Delta de l'Ebre: arrossars i miradors naturals. Un recorregut circular amb sortida i arribada al mateix punt.",
     facts: [
-      { value: '21,097 km', label: 'Distància' },
+      { value: '21,1 km', label: 'Distància' },
       { value: 'Mixt', label: 'Paviment' },
       { value: 'Poble Nou del Delta', label: 'Sortida i arribada' },
     ],
@@ -24,20 +24,19 @@ const content = {
       { label: 'Sortida', km: 0 },
       { label: 'Observatori de la Tancada', km: 4.7 },
       { label: 'Mirador de la Tancada', km: 6.8 },
-      { label: 'Platja dels Eucaliptus', km: 9.5 },
-      { label: 'Mirador de la Tancada', km: 13.7 },
-      { label: "Mirador de l'Embut", km: 18.1 },
-      { label: 'Mirador del Través', km: 20.1 },
-      { label: 'Arribada', km: 21.097 },
+      { label: 'Mirador de la Tancada', km: 9.2 },
+      { label: "Mirador de l'Embut", km: 18.3 },
+      { label: 'Mirador del Través', km: 20.2 },
+      { label: 'Arribada', km: 21.1 },
     ],
     mapTitle: "Mapa del recorregut - Mitja Delta de l'Ebre (Wikiloc)",
     mapCredit: 'Mapa del recorregut via',
   },
   es: {
     heading: 'El recorrido',
-    lead: 'Recorrido circular de 21,097 km que atraviesa algunos de los paisajes más emblemáticos del Delta del Ebre: arrozales y miradores naturales, con salida y llegada en el mismo punto.',
+    lead: 'Recorrido circular de 21,1 km que atraviesa algunos de los paisajes más emblemáticos del Delta del Ebre: arrozales y miradores naturales, con salida y llegada en el mismo punto.',
     facts: [
-      { value: '21,097 km', label: 'Distancia' },
+      { value: '21,1 km', label: 'Distancia' },
       { value: 'Mixto', label: 'Pavimento' },
       { value: 'Poble Nou del Delta', label: 'Salida y llegada' },
     ],
@@ -45,11 +44,10 @@ const content = {
       { label: 'Salida', km: 0 },
       { label: 'Observatorio de la Tancada', km: 4.7 },
       { label: 'Mirador de la Tancada', km: 6.8 },
-      { label: 'Playa de los Eucaliptus', km: 9.5 },
-      { label: 'Mirador de la Tancada', km: 13.7 },
-      { label: 'Mirador del Embut', km: 18.1 },
-      { label: 'Mirador del Través', km: 20.1 },
-      { label: 'Llegada', km: 21.097 },
+      { label: 'Mirador de la Tancada', km: 9.2 },
+      { label: 'Mirador del Embut', km: 18.3 },
+      { label: 'Mirador del Través', km: 20.2 },
+      { label: 'Llegada', km: 21.1 },
     ],
     mapTitle: "Mapa del recorrido - Mitja Delta de l'Ebre (Wikiloc)",
     mapCredit: 'Mapa del recorrido vía',
