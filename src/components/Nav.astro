@@ -29,6 +29,7 @@ const content = {
       { code: 'ca' as Locale, label: 'Català' },
       { code: 'es' as Locale, label: 'Castellano' },
     ],
+    sponsorsLabel: 'Patrocinadors principals',
   },
   es: {
     menuItems: [
@@ -46,6 +47,7 @@ const content = {
       { code: 'ca' as Locale, label: 'Català' },
       { code: 'es' as Locale, label: 'Castellano' },
     ],
+    sponsorsLabel: 'Patrocinadores principales',
   },
 };
 
@@ -90,9 +92,9 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
       <a href={pageMap.home[lang]} aria-label={t.homeAria} class="nav-logo-link">
         <Image src={logo} alt="Mitja Marató Delta de l'Ebre" />
       </a>
-      <span class="nav-logo-divider" aria-hidden="true"></span>
-      <Image src={logoPlp} alt="Grup PLP Dental" class="nav-logo-plp" />
-      <Image src={logoOliva} alt="Grup Oliva Motor" class="nav-logo-oliva" />
+      <span class="nav-logo-divider nav-sponsor-only" aria-hidden="true"></span>
+      <Image src={logoPlp} alt="Grup PLP Dental" class="nav-logo-plp nav-sponsor-only" />
+      <Image src={logoOliva} alt="Grup Oliva Motor" class="nav-logo-oliva nav-sponsor-only" />
     </div>
 
     <input type="checkbox" id="nav-toggle" class="nav-toggle-input" />
@@ -108,6 +110,14 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
       </ul>
 
       <a class="nav-cta" href="https://www.rockthesport.com/es/evento/mitja-delta-del-ebre" target="_blank" rel="noopener noreferrer">{t.cta}</a>
+
+      <div class="nav-menu-sponsors">
+        <p class="nav-menu-sponsors-label">{t.sponsorsLabel}</p>
+        <div class="nav-menu-sponsors-logos">
+          <Image src={logoPlp} alt="Grup PLP Dental" class="nav-logo-plp" />
+          <Image src={logoOliva} alt="Grup Oliva Motor" class="nav-logo-oliva" />
+        </div>
+      </div>
     </div>
   </nav>
 </header>
@@ -172,11 +182,20 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
     flex-shrink: 0;
   }
 
-  .nav-logo-plp,
+  .nav-logo-plp {
+    height: 40px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
   .nav-logo-oliva {
     height: 28px;
     width: auto;
     flex-shrink: 0;
+  }
+
+  .nav-menu-sponsors {
+    display: none;
   }
 
   .nav-toggle-input {
@@ -345,13 +364,8 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
       height: 44px;
     }
 
-    .nav-logo-divider {
-      height: 32px;
-    }
-
-    .nav-logo-plp,
-    .nav-logo-oliva {
-      height: 22px;
+    .nav-sponsor-only {
+      display: none;
     }
 
     .nav-toggle-label {
@@ -397,6 +411,36 @@ const langHref = (code: Locale) => pageMap[currentSlug]?.[code] ?? `/${code}/`;
 
     .nav-cta {
       text-align: center;
+    }
+
+    .nav-menu-sponsors {
+      display: block;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-menu-sponsors-label {
+      margin: 0 0 0.75rem;
+      color: rgba(255, 255, 255, 0.65);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-menu-sponsors-logos {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-menu-sponsors-logos .nav-logo-plp {
+      height: 44px;
+    }
+
+    .nav-menu-sponsors-logos .nav-logo-oliva {
+      height: 32px;
     }
   }
 
